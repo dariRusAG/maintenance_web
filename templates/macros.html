@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+
+{% macro render_table(table_name, relation,choice_list,len) %}
+<fieldset>
+    <legend><strong>{{table_name}}</strong></legend>
+    {% for i in range(len(relation)) %}
+    <input type="checkbox" name="{{ table_name }}"
+           {% set value=relation.iloc[i, 0] %}
+           value="{{ value }}"
+
+           {% if value in choice_list %}
+           checked
+           {% endif %}
+    >
+    {{ value }} ({{ relation.iloc[i, 1] }})<br>
+    {% endfor %}
+</fieldset>
+{% endmacro %}

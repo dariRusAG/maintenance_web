@@ -1,0 +1,305 @@
+/* все основное оформление фона */
+body{
+ background-color: #ffd1d9;
+}
+/* бокс для всего контента под меню */
+.box_for_all{
+ background-color: #f1f1f1;
+ width: 100%;
+ height:100%;
+ box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+ display: flex;
+ flex-direction: row;
+}
+/* меню страниц */
+.menu {
+ background-color: #f1f1f1;
+ box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+ width: 100%;
+}
+/*Теперь уберем маркеры со списка и произведем выравнивание его элементов в одну
+линию*/
+.menu li {
+ display: inline-block;
+ vertical-align: top;
+ padding: 12px;
+
+}
+.menu a {
+ text-decoration: none; /* Убирает подчеркивание для ссылок */
+
+ }
+.menu li:hover {
+ background-color: #fc6c85;
+ cursor: pointer;
+ color: #ffd1d9;
+}
+.menu ul {
+ display: flex;
+ justify-content:space-between;
+ padding: 0px;
+}
+.active{
+ background-color: #fc6c85;
+ color: #ffd1d9;
+}
+.active a:visited{
+ color: #ffd1d9;
+}
+.menu a:hover{
+ color: #ffd1d9;
+}
+
+/* бокс для фильтров*/
+.add_menu{
+  width: 20vw;
+  outline: 3px solid #fc6c85;
+  display: flex;
+    justify-content: center;
+}
+
+/* бокс для ивентов*/
+.all_events_box{
+  width: 85vw;
+  display: flex;
+   justify-content: center;
+   flex-wrap: wrap;
+}
+
+p{
+margin-left:25%;
+margin-top:10%;
+}
+.container_box_one_event{
+margin-left:2%;
+margin-right:2%;
+margin-top:15px;
+margin-bottom:1%;
+ width: 22vw;
+ height:auto;
+
+	outline: 3px solid #fc6c85;
+	font-size: 15px;
+	padding: 7px;
+	background: #ffd1d9;
+	border: none;
+	text-align: left;
+	font-size: 15px;
+	border-top: 3px solid #fff;
+	border-bottom: 3px solid #fc6c85;position: relative;
+}
+p3{
+font-weight: bold;
+}
+.buttons{
+margin-top:6%;
+  display: flex;
+   justify-content: space-between;
+}
+
+.info_about_event_gray{
+background: gray;
+top:0;
+left:0;
+position:fixed;
+width:100%;
+height:100%;
+display: flex;
+justify-content: center;
+align-items:center;
+
+opacity: 0.95;
+}
+
+.info_about_event{
+opacity: 1;
+background: #fddde6;
+top:0;
+left:0;
+position:fixed;
+margin-left:30%;
+margin-top:2%;
+width:40%;
+height:auto;
+
+outline: 3px solid #fc6c85;
+font-size: 15px;
+padding: 7px;
+border: none;
+text-align: left;
+font-size: 15px;
+border-top: 3px solid #fff;
+border-bottom: 3px solid #fc6c85;
+
+}
+
+p4{
+font-weight: bold;
+font-size: 17px;
+}
+
+
+.close_button{
+background: yellow;
+top:0;
+left:0;
+margin-left:68.7%;
+margin-top:2.5%;
+position:fixed;
+opacity: 0;
+z-index:2;
+}
+
+
+.auth{
+opacity: 1;
+background: #fddde6;
+top:0;
+left:0;
+position:fixed;
+margin-left:37%;
+margin-top:2%;
+width:30%;
+height:50%;
+outline: 3px solid #fc6c85;
+font-size: 15px;
+padding: 7px;
+border: none;
+text-align: left;
+font-size: 15px;
+border-top: 3px solid #fff;
+border-bottom: 3px solid #fc6c85;
+
+display:flex;
+justify-content:center;
+align-content:center;
+flex-direction:column;
+flex-wrap: wrap;
+}
+
+
+
+
+.cl-btn-7 {
+    top:0;
+left:0;
+position:fixed;
+margin-left:68%;
+margin-top:2%;
+    border-radius: 40px;
+    position: fixed;
+    z-index: 1;
+    pointer-events: none;
+}
+.cl-btn-7:before {
+    content: '+';
+    color: #b3000f;
+    position: absolute;
+    z-index: 2;
+    transform: rotate(45deg);
+    font-size: 50px;
+    line-height: 1;
+    top: -5px;
+    left: 6px;
+    transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85);
+}
+
+.cl-btn-8 {
+    top:0;
+left:0;
+position:fixed;
+margin-left:65%;
+margin-top:2%;
+    border-radius: 40px;
+    position: fixed;
+    z-index: 1;
+    pointer-events: none;
+}
+.cl-btn-8:before {
+    content: '+';
+    color: #b3000f;
+    position: absolute;
+    z-index: 2;
+    transform: rotate(45deg);
+    font-size: 50px;
+    line-height: 1;
+    top: -5px;
+    left: 6px;
+    transition: all 0.3s cubic-bezier(0.77, 0, 0.2, 0.85);
+}
+.close_button2{
+top:0;
+left:0;
+margin-left:65.7%;
+margin-top:2.5%;
+position:fixed;
+opacity: 0;
+z-index:2;
+}
+
+.close_button3{
+top:0;
+left:0;
+margin-left:68.7%;
+margin-top:2.5%;
+position:fixed;
+opacity: 0;
+z-index:2;
+}
+
+.box_for_all_profile{
+ background-color: #f1f1f1;
+ width: 100%;
+ height:100%;
+ box-shadow: 4px 5px 10px rgba(0, 0, 0, 0.4);
+ display: flex;
+ flex-direction: column;
+
+ min-height:90vh;
+}
+
+/* бокс для фильтров*/
+.add_menu_user{
+  width: 30vw;
+   height:20vh;
+  outline: 3px solid #fc6c85;
+  display: flex;
+    justify-content: center;
+}
+
+.box_for_all_profile_wt_text{
+ display: flex;
+ flex-direction: row;
+}
+
+.rate_gray{
+background: gray;
+top:0;
+left:0;
+position:fixed;
+width:100%;
+height:100%;
+display: flex;
+justify-content: center;
+align-items:center;
+
+opacity: 0.95;
+}
+
+.rate{
+opacity: 1;
+background: #fddde6;
+top:0;
+left:0;
+position:fixed;
+margin-left:30%;
+margin-top:2%;
+width:40%;
+outline: 3px solid #fc6c85;
+font-size: 15px;
+padding: 7px;
+border: none;
+
+
+}
+
