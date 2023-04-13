@@ -230,13 +230,13 @@
                     <p4>{{ event_info['participants'].values[0] }}</p4>
                     <br>
                     <br>Количество зарегистрировавшихся на мероприятие:
-                    {#            {% if len(participants_list[participants_list['event_id'] == event_info['event_id'].values[0]]['coun']) != 0 %}#}
-                    {#                <p4>#}
-                    {#                    {{ participants_list[participants_list['event_id'] == event_info['event_id'].values[0]]['coun'].values[0] }}#}
-                    {#                </p4>#}
-                    {#            {% else %}#}
-                    {#                0#}
-                    {#            {% endif %}#}
+                                {% if len(participants_list[participants_list['event_id'] == event_info['event_id'].values[0]]['coun']) != 0 %}
+                                    <p4>
+                                        {{ participants_list[participants_list['event_id'] == event_info['event_id'].values[0]]['coun'].values[0] }}
+                                    </p4>
+                                {% else %}
+                                    0
+                                {% endif %}
                     <br>
                     {% if event_info['beginning_dat'].values[0] == event_info['expiration_dat'].values[0] %}
                         <br>Дата мероприятия:

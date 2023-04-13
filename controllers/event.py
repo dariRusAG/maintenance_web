@@ -11,7 +11,7 @@ def event():
     # неправильный логин
     error_info = False
 
-    event_id = 0
+    event_id = 1
     info_ = 0
     df_users = get_users(conn)
     sort = 0
