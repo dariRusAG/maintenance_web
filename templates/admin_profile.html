@@ -36,11 +36,11 @@
             </div>
         {% elif admin_panel_button == 'Редактирование' %}
             <div class="admin_panel_right_data">
-                {{ macros.admin_panel_edit() }}
+                {{ macros.admin_panel_edit(all_events, checked_value, one_event_info, theme_list, type_list, organizer_list, location_list, status_list, len) }}
             </div>
         {% elif admin_panel_button == 'Оценки' %}
             <div class="admin_panel_right_data">
-                {{ macros.admin_panel_rate() }}
+                {{ macros.admin_panel_rate(user_rate, len) }}
             </div>
         {% elif admin_panel_button == 'Предложения' %}
             <div class="admin_panel_right_data">

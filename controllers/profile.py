@@ -31,7 +31,7 @@ def profile():
     if request.values.get('to_rate_event'):
         rate_box = request.values.get('rate_box')
         rate_text= request.values.get('rate_text')
-        rate = "Оценка: " + rate_box+" Комментарий: "+rate_text
+        rate = "Оценка: " + rate_box+" Комментарий: " + rate_text
         if 'remember_id_' in session:
             to_rate(conn,session['remember_id_'],rate,session['user_id'])
             session.pop('remember_id_', None)

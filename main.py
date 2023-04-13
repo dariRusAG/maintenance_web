@@ -43,6 +43,7 @@ CREATE TABLE IF NOT EXISTS location(
 location_id INTEGER PRIMARY KEY AUTOINCREMENT,
 venue_id INT,
 location_name VARCHAR(70),
+UNIQUE(venue_id, location_name)
 FOREIGN KEY (venue_id)  REFERENCES venue (venue_id)
 );
 
@@ -205,30 +206,31 @@ VALUES
 ''')
 
 con.executescript('''
-INSERT INTO user_event (event_id,user_id)
+INSERT INTO user_event (event_id,user_id, rate)
 VALUES
-(1,1),
-(2,1),
-(3,1),
-(4,1),
-(5,1),
-(6,1),
-(7,1),
-(8,1),
-(9,1),
-(10,1),
-(1,3),
-(2,3),
-(11,3),
-(3,3),
-(8,3),
-(4,3),
-(5,3),
-(6,3),
-(1,5),
-(3,5),
-(8,5),
-(6,5);
+(1,4,'None'),
+(2,4,'Оценка: Всё очень понравилось Комментарий: Было круто! Схожу еще раз'),
+(3,4,'Оценка: Всё очень понравилось Комментарий: шикарное мероприятие, удобное время, интересные темы'),
+(4,4,'None'),
+(5,4,'None'),
+(6,4,'None'),
+(7,4,'None'),
+(8,4,'None'),
+(9,4,'None'),
+(10,4,'None'),
+(1,3,'None'),
+(2,3,'Оценка: Всё было хорошо Комментарий: норм, но время не удобное!'),
+(11,3,'None'),
+(3,3,'Оценка: Всё было хорошо Комментарий: хотелось бы аудиторию побольше'),
+(8,3,'None'),
+(4,3,'None'),
+(5,3,'None'),
+(6,3,'None'),
+(1,5,'None'),
+(3,5,'Оценка: Были недостатки Комментарий: организатор хам!!!'),
+(2,5,'Оценка: Были недостатки Комментарий: Даша лох! Зачем читаешь тут???'),
+(8,5,'None'),
+(6,5,'None');
 ''')
 
 
@@ -262,6 +264,11 @@ SELECT * FROM status;
 print(df)
 df = pd.read_sql('''
 SELECT * FROM event;
+''',con)
+print(df)
+
+df = pd.read_sql('''
+SELECT * FROM user_event;
 ''',con)
 print(df)
 # login = "user"
