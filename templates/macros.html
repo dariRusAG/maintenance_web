@@ -14,6 +14,26 @@
     <br>
 {% endmacro %}
 
+{% macro render_option_edit(name, choice, list, len) %}
+    <br>
+    <select name= {{ name }}>
+        {% set n = len(list) %}
+        {% for i in range(n) %}
+            {% set id = i %}
+            {% if choice == list.loc[i, "name"] %}
+                <option value={{ id+1 }} selected>
+                    {{ list.loc[i, "name"] }}
+                </option>
+            {% else %}
+                <option value={{ id+1 }}>
+                    {{ list.loc[i, "name"] }}
+                </option>
+            {% endif %}
+        {% endfor %}
+    </select>
+    <br>
+{% endmacro %}
+
 <!--Макрос для вывода добавления мероприятий на панели администратора-->
 {% macro admin_panel_add(theme_list, type_list, organizer_list, location_list, status_list, len) %}
     <form action="{{ url_for('admin_profile') }}" method="get">
@@ -30,7 +50,7 @@
         {{ render_option("organizer", organizer_list, len) }}
         Выберите площадку
         {{ render_option("location", location_list, len) }}
-         Введите место проведения
+        Введите место проведения
         <div class="admin_panel_right_data_text">
             <input type="text" name="new_event_venue" placeholder="" style="width:100%">
         </div>
@@ -45,27 +65,137 @@
             <input type="text" name="new_event_beginning_date" placeholder="" style="width:100%">
             <input type="text" name="new_event_expiration_date" placeholder="" style="width:100%">
         </div>
-            Введите время начала и время окончания мероприятия
+        Введите время начала и время окончания мероприятия
         <div class="admin_panel_right_data_text">
             <input type="text" name="start_time" placeholder="" style="width:100%">
             <input type="text" name="end_time" placeholder="" style="width:100%">
         </div>
-     Введите описание мероприятия
+        Введите описание мероприятия
         <br>
-    <textarea name="new_event_description" style = "width:100%; height:6vh; resize: none"></textarea>
-    <input type="submit" name="add_new_event" value="Добавить новое мероприятие" style="margin-top: 15px">
+        <textarea name="new_event_description" style="width:100%; height:6vh; resize: none"></textarea>
+        <input type="submit" name="add_new_event" value="Добавить новое мероприятие" style="margin-top: 15px">
     </form>
     <br>
 {% endmacro %}
 
 <!--Макрос для вывода редактирования на панели администратора-->
-{% macro admin_panel_edit() %}
-    Редактирование мероприятия
+{% macro admin_panel_edit(all_events, checked_value, one_event_info, theme_list, type_list, organizer_list, location_list, status_list, len) %}
+
+    <div class="edit_big_box">
+        {% if checked_value == False %}
+            {% for i in range(len(all_events)) %}
+                <div class="edit_small_box">
+
+                    <form action='' method="get">
+                        {{ all_events.loc[i, 'event_name'] }}
+                        <input type="hidden" name="choice_event" value={{ all_events['event_id'].values[i] }}>
+                        <input type="submit" value="Подробнее"
+                               style="background:#fc6c85;  color: #fff0f5; margin-left: 5px">
+                    </form>
+
+                    <form action='' method="get">
+                        <input type="submit" value="Изменить"
+                               style="background:coral;  color: #fff0f5; margin-left: 5px">
+                        <input type="hidden" name="is_edit_event" value={{ all_events['event_id'].values[i] }}>
+                    </form>
+                    <form action='' method="get">
+                        <input type="submit" value="Удалить"
+                               style="background:#ba2537;  color: #fff0f5; margin-left: 5px">
+                        <input type="hidden" name="delete_event" value={{ all_events['event_id'].values[i] }}>
+                    </form>
+                </div>
+                <br>
+            {% endfor %}
+        {% else %}
+            <form action='' method="get">
+                <div class="admin_panel_right_data_text">
+                    Название:
+                    <input type="text" name="edit_event_name" value="{{ one_event_info['event_name'].values[0] }}"
+                           style="width: 30vw; margin-left: 5px">
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Тема:
+                    {{ render_option_edit("edit_theme", one_event_info['theme_name'].values[0], theme_list, len) }}
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Тип:
+                    {{ render_option_edit("edit_type", one_event_info['type_name'].values[0], type_list, len) }}
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Количество участников:
+                    <input type="text" name="edit_event_participants"
+                           value="{{ one_event_info['participants'].values[0] }}"
+                           style="width: 30vw; margin-left: 5px">
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Дата начала:
+                    <input type="text" name="edit_event_beginning_dat"
+                           value="{{ one_event_info['beginning_dat'].values[0] }}"
+                           style="width: 15vw; margin-left: 5px">
+                    Дата окончания:
+                    <input type="text" name="edit_event_expiration_dat"
+                           value="{{ one_event_info['expiration_dat'].values[0] }}"
+                           style="width: 15vw; margin-left: 5px">
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Время начала:
+                    <input type="text" name="edit_event_start_time"
+                           value="{{ one_event_info['start_time'].values[0] }}" style="width: 15vw; margin-left: 5px">
+                    Время окончания:
+                    <input type="text" name="edit_event_end_time" value="{{ one_event_info['end_time'].values[0] }}"
+                           style="width: 15vw; margin-left: 5px">
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Организатор:
+                    {{ render_option_edit("edit_organizer", one_event_info['organizer_name'].values[0], organizer_list, len) }}
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Площадка проведения:
+                    {{ render_option_edit("edit_location", one_event_info['location_name'].values[0], location_list, len) }}
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Место проведения:
+                    <input type="text" name="edit_event_venue" value="{{ one_event_info['venue_name'].values[0] }}"
+                           style="width: 15vw; margin-left: 5px">
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Статус:
+                    {{ render_option_edit("edit_status", one_event_info['status_name'].values[0], status_list, len) }}
+                </div>
+                <div class="admin_panel_right_data_text">
+                    Описание:
+                </div>
+                <textarea name="edit_event_description" value="{{ one_event_info['description'].values[0] }}"
+                          style="width:90%; height:15vh; resize: none">{{ one_event_info['description'].values[0] }}</textarea>
+
+                <input type="submit" name="edit_event" value="Отредактировать мероприятие"
+                       style="margin-top: 40px; width:20vw">
+            </form>
+        {% endif %}
+
+    </div>
 {% endmacro %}
 
 <!--Макрос для вывода оценок на панели администратора-->
-{% macro admin_panel_rate() %}
+{% macro admin_panel_rate(user_rate, len) %}
     Оценки мероприятий
+    <br>
+    <div class="rate_big_box">
+        {% for i in range(len(user_rate)) %}
+            <div class="rate_small_box">
+                <cool_text>Логин:</cool_text>
+                {{ user_rate.iloc[i, 0] }}
+                <br>
+                <cool_text>Мероприятие:</cool_text>
+                {{ user_rate.iloc[i, 2] }}
+                <br>
+                <cool_text>Дата мероприятия:</cool_text>
+                {{ user_rate.iloc[i, 3] }}
+                <br>
+                {{ user_rate.iloc[i, 1] }}
+            </div>
+        {% endfor %}
+    </div>
 {% endmacro %}
 
 <!--Макрос для вывода предложенных мероприятий на панели администратора-->
