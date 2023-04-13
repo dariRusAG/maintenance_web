@@ -94,7 +94,7 @@ def admin_profile():
         status_list=df_status,
         user_rate=df_user_event,
         all_events=df_event,
-        detailed_info=detailed_info,
+        # detailed_info=detailed_info,
         event_info=event_info,
         participants_list=df_participants,
         checked_value=checked_value,
