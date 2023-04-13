@@ -52,8 +52,30 @@ def profile():
     df_status = get_status(conn, session['user_id'])
     df_event = get_user_events(conn, session['user_id'])
     event_info = get_event_info(conn, event_id)
-    df_event = df_event[((df_event['status_name'].isin(session['status_user'])) | (len(session['status_user']) == 0))]
     df_participants = get_participants(conn)
+    df_event = df_event[((df_event['status_name'].isin(session['status_user'])) | (len(session['status_user']) == 0))]
+
+    title = request.values.get('list')
+    if title == 'Отсортировать по алфавиту ↓':
+        sort = 'event_name DESC'
+        df_event = get_user_events_sort(conn, session['user_id'], sort)
+    elif title == 'Отсортировать по алфавиту ↑':
+        sort = 'event_name'
+        df_event = get_user_events_sort(conn, session['user_id'], sort)
+    elif title == 'Отсортировать по дате ↓':
+        sort = 'strftime("%Y-%m-%d", beginning_date) DESC'
+        df_event = get_user_events_sort(conn, session['user_id'], sort)
+    elif title == 'Отсортировать по дате ↑':
+        sort = 'strftime("%Y-%m-%d", beginning_date)'
+        df_event = get_user_events_sort(conn, session['user_id'], sort)
+    elif title == 'Отсортировать по статусу ↓':
+        sort = 'status_id DESC'
+        df_event = get_user_events_sort(conn, session['user_id'], sort)
+    elif title == 'Отсортировать по статусу ↑':
+        sort = 'status_id'
+        df_event = get_user_events_sort(conn, session['user_id'], sort)
+    elif title == 'Рекомендуемая сортировка':
+        df_event = get_user_events(conn, session['user_id'])
 
     print(df_event)
 
@@ -65,7 +87,8 @@ def profile():
         event_info=event_info,
         info_=info_,
         participants_list=df_participants,
-        len=len
+        len=len,
+        title=title
     )
 
     return html

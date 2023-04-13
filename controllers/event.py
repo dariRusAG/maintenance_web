@@ -14,6 +14,7 @@ def event():
     event_id = 0
     info_ = 0
     df_users = get_users(conn)
+    sort = 0
 
         # нажата кнопка Найти
     # if request.values.get('status'):
@@ -56,7 +57,6 @@ def event():
     elif request.values.get('user_login'):
         user_login = True
 
-
     elif request.values.get('login'):
         login = request.values.get('login')
         password = request.values.get('password')
@@ -75,6 +75,7 @@ def event():
             case "error":
                 error_info = True
                 user_login = True
+
 
     # нажата кнопка Очистить
     if request.form.get('clear'):
@@ -154,8 +155,30 @@ def event():
     df_location = get_location(conn)
     df_status = get_status(conn)
     event_info = get_event_info(conn, event_id)
-    df_event = get_event(conn)
     df_participants = get_participants(conn)
+    df_event = get_event(conn)
+
+    title = request.values.get('list')
+    if title == 'Отсортировать по алфавиту ↓':
+        sort = 'event_name DESC'
+        df_event = get_event_sort(conn, sort)
+    elif title == 'Отсортировать по алфавиту ↑':
+        sort = 'event_name'
+        df_event = get_event_sort(conn, sort)
+    elif title == 'Отсортировать по дате ↓':
+        sort = 'strftime("%Y-%m-%d", beginning_date) DESC'
+        df_event = get_event_sort(conn, sort)
+    elif title == 'Отсортировать по дате ↑':
+        sort = 'strftime("%Y-%m-%d", beginning_date)'
+        df_event = get_event_sort(conn, sort)
+    elif title == 'Отсортировать по статусу ↓':
+        sort = 'status_id DESC'
+        df_event = get_event_sort(conn, sort)
+    elif title == 'Отсортировать по статусу ↑':
+        sort = 'status_id'
+        df_event = get_event_sort(conn, sort)
+    elif title == 'Рекомендуемая сортировка':
+        df_event = get_event(conn)
 
     df_event = df_event[((df_event['type_name'].isin(session['types'])) | (len(session['types']) == 0)) & (
             (df_event['theme_name'].isin(session['themes'])) | (len(session['themes']) == 0)) & (
@@ -164,7 +187,6 @@ def event():
             (df_event['status_name'].isin(session['status'])) | (len(session['status']) == 0)) & (
             (df_event['start_time'] >= session['start_time'])) & (df_event['end_time'] <= session['end_time']) & (
             (df_event['beginning_date'] >= session['start_date'])) & (df_event['expiration_date'] <= session['end_date'])]
-
 
     html = render_template(
         'event.html',
@@ -181,7 +203,8 @@ def event():
         user_event_list=df_user_event,
         participants_list=df_participants,
         user_role=session['user_role'],
-        len=len
+        len=len,
+        title=title
     )
 
     return html

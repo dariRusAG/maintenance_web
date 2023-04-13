@@ -16,6 +16,20 @@
     </ul>
 </div>
 
+<div class="sort">
+    <form action='{{ url_for('profile') }}' method="post">
+        <select name="list">
+            <option {% if title == 'None' or title == 'Рекомендуемая сортировка' %} selected {% endif %}>Рекомендуемая сортировка</option>
+            <option {% if title == 'Отсортировать по алфавиту ↓' %} selected {% endif %}>Отсортировать по алфавиту ↓</option>
+            <option {% if title == 'Отсортировать по алфавиту ↑' %} selected {% endif %}>Отсортировать по алфавиту ↑</option>
+            <option {% if title == 'Отсортировать по дате ↓' %} selected {% endif %}>Отсортировать по дате ↓</option>
+            <option {% if title == 'Отсортировать по дате ↑' %} selected {% endif %}>Отсортировать по дате ↑</option>
+            <option {% if title == 'Отсортировать по статусу ↓' %} selected {% endif %}>Отсортировать по статусу ↓</option>
+            <option {% if title == 'Отсортировать по статусу ↑' %} selected {% endif %}>Отсортировать по статусу ↑</option>
+        </select>
+		<input type="submit" value="Отсортировать">
+    </form>
+</div>
 
 <div class=box_for_all_profile>
     {% if len(status_list) != 0 %}
@@ -55,6 +69,8 @@
 <div class="info_about_event">
     <br>Название:
     <p4>{{ event_info['event_name'].values[0]}}</p4>
+    <br>
+    <img src="{{ event_info['picture'].values[0] }}" alt="" width="520px" height="auto">
     <br>
     <br>Тип:
     <p4>{{ event_info['type_name'].values[0]}}</p4>

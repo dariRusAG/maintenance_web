@@ -3,7 +3,7 @@ import pandas as pd
 def get_user_events(conn,id):
     return pd.read_sql(f'''SELECT event_name,theme_name,type_name,participants, 
     strftime('%d.%m.%Y',beginning_date) as beginning_date,strftime('%d.%m.%Y',expiration_date) as expiration_date,
-    start_time,end_time,organizer_name,location_name,venue_name, description, status_name,status_id,event_id
+    start_time,end_time,organizer_name,location_name,venue_name, description, status_name,status_id,event_id,picture
     FROM user_event
     LEFT JOIN event USING (event_id) 
     LEFT JOIN theme USING (theme_id) 
@@ -14,6 +14,22 @@ def get_user_events(conn,id):
     LEFT JOIN status USING (status_id)
     WHERE user_id = :id
     ORDER BY status_id,strftime('%Y-%m-%d',beginning_date) DESC, event_name 
+    ''', conn,params={"id":id})
+
+def get_user_events_sort(conn,id, sort):
+    return pd.read_sql(f'''SELECT event_name,theme_name,type_name,participants, 
+    strftime('%d.%m.%Y',beginning_date) as beginning_date,strftime('%d.%m.%Y',expiration_date) as expiration_date,
+    start_time,end_time,organizer_name,location_name,venue_name, description, status_name,status_id,event_id,picture
+    FROM user_event
+    LEFT JOIN event USING (event_id) 
+    LEFT JOIN theme USING (theme_id) 
+    LEFT JOIN type USING (type_id) 
+    LEFT JOIN organizer USING (organizer_id) 
+    LEFT JOIN location USING (location_id) 
+    LEFT JOIN venue USING (venue_id) 
+    LEFT JOIN status USING (status_id)
+    WHERE user_id = :id
+    ORDER BY {sort} 
     ''', conn,params={"id":id})
 
 def get_status(conn,id):

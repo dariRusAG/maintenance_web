@@ -71,11 +71,8 @@ margin-left:25%;
 margin-top:10%;
 }
 .container_box_one_event{
-margin-left:2%;
-margin-right:2%;
-margin-top:15px;
-margin-bottom:1%;
- width: 22vw;
+    margin: 15px 2% 1%;
+    width: 22vw;
  height:auto;
 
 	outline: 3px solid #fc6c85;
@@ -88,6 +85,26 @@ margin-bottom:1%;
 	border-top: 3px solid #fff;
 	border-bottom: 3px solid #fc6c85;position: relative;
 }
+
+.container_box_one_event_super {
+    margin: 15px 2% 1%;
+    width: 22vw;
+    height: auto;
+
+    outline: 3px solid #fc6c85;
+    font-size: 15px;
+    padding: 7px;
+    background: #ffd1d9;
+    /*border: none;*/
+    text-align: left;
+    /*border-top: 3px solid #fff;*/
+    /*border-bottom: 3px solid #fc6c85;*/
+    position: relative;
+
+    box-shadow: inset 0 0 30px rgb(255, 105, 105);
+/*border-radius: 5px;*/
+border: 1px solid #fc6c85;
+}
 p3{
 font-weight: bold;
 }
@@ -97,40 +114,115 @@ margin-top:6%;
    justify-content: space-between;
 }
 
-.info_about_event_gray{
-background: gray;
-top:0;
-left:0;
-position:fixed;
-width:100%;
-height:100%;
-display: flex;
-justify-content: center;
-align-items:center;
+/*.info_about_event_gray{*/
+/*background: gray;*/
+/*top:0;*/
+/*left:0;*/
+/*position:fixed;*/
+/*width:100%;*/
+/*height:100%;*/
+/*display: flex;*/
+/*justify-content: center;*/
+/*align-items:center;*/
 
-opacity: 0.95;
+/*opacity: 0.95;*/
+/*}*/
+
+.info_about_event {
+    position: fixed; /* фиксированное положение */
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    /*background: rgb(253, 221, 230); !* цвет фона *!*/
+    background: rgba(0,0,0,0.5); /* цвет фона */
+    z-index: 1050;
+    opacity: 0; /* по умолчанию модальное окно прозрачно */
+    transition: opacity 200ms ease-in; /* анимация перехода */
+    pointer-events: none; /* элемент видим для событий мыши */
+    margin: 0;
+    padding: 0;
+
+/*margin-left:30%;*/
+/*margin-top:2%;*/
+/*width:40%;*/
+/*height:auto;*/
+/*outline: 3px solid #fc6c85;*/
+/*font-size: 15px;
+*/
+/*padding: 7px;*/
+/*border: none;*/
+/*text-align: left;*/
+/*border-top: 3px solid #fff;*/
+/*border-bottom: 3px solid #fc6c85;*/
+
 }
 
-.info_about_event{
-opacity: 1;
-background: #fddde6;
-top:0;
-left:0;
-position:fixed;
-margin-left:30%;
-margin-top:2%;
-width:40%;
-height:auto;
+.info_about_event:target {
+    opacity: 1; /* делаем окно видимым */
+	  pointer-events: auto; /* элемент видим для событий мыши */
+    overflow-y: auto; /* добавляем прокрутку по y, когда элемент не помещается на страницу */
+}
 
-outline: 3px solid #fc6c85;
-font-size: 15px;
-padding: 7px;
-border: none;
-text-align: left;
-font-size: 15px;
-border-top: 3px solid #fff;
-border-bottom: 3px solid #fc6c85;
+/* ширина модального окна и его отступы от экрана */
+.modal-dialog {
+    position: relative;
+    width: auto;
+    margin: 10px;
+}
 
+@media (min-width: 576px) {
+  .modal-dialog {
+      max-width: 580px;
+      margin: 30px auto; /* для отображения модального окна по центру */
+  }
+}
+
+/* свойства для блока, содержащего контент модального окна */
+.modal-content {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #ffd1d9;
+    background-clip: padding-box;
+    border: 1px solid rgb(252, 108, 133);
+    /*border-radius: .3rem;*/
+    /*outline: 0;*/
+    outline: 3px solid #fc6c85;
+}
+
+@media (min-width: 768px) {
+  .modal-content {
+      box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  }
+}
+
+/* свойства для кнопки "Закрыть" */
+.close {
+    float: right;
+    font-family: sans-serif;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1;
+    color: #000;
+    text-shadow: 0 1px 0 #fff;
+    opacity: .5;
+    text-decoration: none;
+}
+/* свойства для кнопки "Закрыть" при нахождении её в фокусе или наведении */
+.close:focus, .close:hover {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+    opacity: .75;
+}
+
+/* свойства для блока, содержащего основное содержимое окна */
+.modal-body {
+  position: relative;
+    flex: 1 1 auto;
+    overflow: auto;
+    display: block;
 }
 
 p4{
@@ -370,3 +462,17 @@ background:white;
     border: 2px solid #e3c3d4;
 }
 
+.info {
+    text-align: left;
+    height: auto;
+    width: 100%;
+    margin-left: 1%;
+    margin-top: 15px;
+}
+
+.sort {
+    text-align: right;
+    height: auto;
+    width: 100%;
+    margin-bottom: 15px;
+}
