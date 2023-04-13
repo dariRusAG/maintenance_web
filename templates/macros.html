@@ -1,18 +1,185 @@
 <!DOCTYPE html>
 
-{% macro render_table(table_name, relation,choice_list,len) %}
-<fieldset>
-    <legend><strong>{{table_name}}</strong></legend>
-    {% for i in range(len(relation)) %}
-    <input type="checkbox" name="{{ table_name }}"
-           {% set value=relation.iloc[i, 0] %}
-           value="{{ value }}"
+{% macro render_option(name, list, len) %}
+    <br>
+    <select name= {{ name }}>
+        {% set n = len(list) %}
+        {% for i in range(n) %}
+            {% set id = i %}
+            <option value={{ id+1 }}>
+                {{ list.loc[i, "name"] }}
+            </option>
+        {% endfor %}
+    </select>
+    <br>
+{% endmacro %}
 
-           {% if value in choice_list %}
-           checked
-           {% endif %}
-    >
-    {{ value }} ({{ relation.iloc[i, 1] }})<br>
-    {% endfor %}
-</fieldset>
+<!--Макрос для вывода добавления мероприятий на панели администратора-->
+{% macro admin_panel_add(theme_list, type_list, organizer_list, location_list, status_list, len) %}
+    <form action="{{ url_for('admin_profile') }}" method="get">
+        Введите название мероприятия
+        <br>
+        <div class="admin_panel_right_data_text">
+            <input type="text" name="new_event_name" placeholder="" style="width:100%">
+        </div>
+        Выберите тему
+        {{ render_option("theme", theme_list, len) }}
+        Выберите тип
+        {{ render_option("type", type_list, len) }}
+        Выберите организатора
+        {{ render_option("organizer", organizer_list, len) }}
+        Выберите площадку
+        {{ render_option("location", location_list, len) }}
+         Введите место проведения
+        <div class="admin_panel_right_data_text">
+            <input type="text" name="new_event_venue" placeholder="" style="width:100%">
+        </div>
+        Выберите статус
+        {{ render_option("status", status_list, len) }}
+        Введите количество участников
+        <div class="admin_panel_right_data_text">
+            <input type="text" name="new_event_part" placeholder="" style="width:100%">
+        </div>
+        Введите дату начала и дату окончания мероприятия
+        <div class="admin_panel_right_data_text">
+            <input type="text" name="new_event_beginning_date" placeholder="" style="width:100%">
+            <input type="text" name="new_event_expiration_date" placeholder="" style="width:100%">
+        </div>
+            Введите время начала и время окончания мероприятия
+        <div class="admin_panel_right_data_text">
+            <input type="text" name="start_time" placeholder="" style="width:100%">
+            <input type="text" name="end_time" placeholder="" style="width:100%">
+        </div>
+     Введите описание мероприятия
+        <br>
+    <textarea name="new_event_description" style = "width:100%; height:6vh; resize: none"></textarea>
+    <input type="submit" name="add_new_event" value="Добавить новое мероприятие" style="margin-top: 15px">
+    </form>
+    <br>
+{% endmacro %}
+
+<!--Макрос для вывода редактирования на панели администратора-->
+{% macro admin_panel_edit() %}
+    Редактирование мероприятия
+{% endmacro %}
+
+<!--Макрос для вывода оценок на панели администратора-->
+{% macro admin_panel_rate() %}
+    Оценки мероприятий
+{% endmacro %}
+
+<!--Макрос для вывода предложенных мероприятий на панели администратора-->
+{% macro admin_panel_new() %}
+    Предложенные мероприятия
+{% endmacro %}
+
+{% macro render_table(table_name, relation,choice_list,len) %}
+    <fieldset>
+        <legend><strong>{{ table_name }}</strong></legend>
+        {% for i in range(len(relation)) %}
+            <input type="checkbox" name="{{ table_name }}"
+                    {% set value=relation.iloc[i, 0] %}
+                   value="{{ value }}"
+
+                    {% if value in choice_list %}
+                   checked
+                    {% endif %}
+            >
+            {{ value }} ({{ relation.iloc[i, 1] }})<br>
+        {% endfor %}
+    </fieldset>
+{% endmacro %}
+
+{% macro render_event_list(events, len) %}
+    <form action="" method="get">
+        <div class="all_events_box">
+            <br>
+            {% for i in range(len(events)) %}
+                <div class="container_box_one_event">
+                {% if events['status_id'].values[i] == 2 %}
+                    <p3 style="color:#c8385a;">
+                        Внимание! Мероприятие было перенесено на {{ events['beginning_date'].values[i] }}!
+                    </p3>
+                    <br>
+                {% endif %}
+                {% if events['status_id'].values[i] == 3 %}
+                    <p3 style="color:#c8385a;">
+                        Внимание! Мероприятие было отменено!
+                    </p3>
+                    <br>
+                {% endif %}
+                {% if events['status_id'].values[i] == 4 %}
+                    <p3 style="color:#c8385a;">
+                        Мероприятие завершено.
+                    </p3>
+                    <br>
+                {% endif %}
+                <br>Название:
+                <p3>{{ events['event_name'].values[i] }}</p3>
+                <br>
+                <br>Тип:
+                <p3>{{ events['type_name'].values[i] }}</p3>
+                <br>
+                <br>Тема:
+                <p3>{{ events['theme_name'].values[i] }}</p3>
+                <br>
+                <br>Количество участников:
+                <p3>{{ events['participants'].values[i] }}</p3>
+                <br>
+                <br>Дата:
+                <p3>{{ events['beginning_date'].values[i] }}</p3>
+                <br>
+                <br>Время:
+                <p3>{{ events['start_time'].values[i] }}</p3>
+                <br>
+                <br>Место проведения:
+                <p3>{{ events['location_name'].values[i] }}</p3>
+                <br>
+                <br>Статус:
+                {% if (events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4) %}
+                    <p3 style="color:#a52a2a;">{{ events['status_name'].values[i] }}</p3>
+                {% else %}
+                    {% if events['status_id'].values[i] == 1 %}
+                        <p3 style="color:#47a76a;">{{ events['status_name'].values[i] }}</p3>
+                    {% else %}
+                        <p3 style="color:#a98307;">{{ events['status_name'].values[i] }}</p3>
+                    {% endif %}
+                {% endif %}
+                <br><br>
+                {% if (events['status_id'].values[i] == 1) or (events['status_id'].values[i] == 2) %}
+                    <div class="buttons">
+                    <form action='' method="get">
+                        <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
+                        <input type="submit" value="Отменить участие"
+                               style="position: absolute; left: 2%;bottom: 2%;background:#c8385a;  color: #fff0f5;">
+                    </form>
+                {% else %}
+                    {% if (events['status_id'].values[i] == 3) %}
+                        <div class="buttons">
+                        <form action='' method="get">
+                            <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
+                            <input type="submit" value="Удалить из списка"
+                                   style="position: absolute; left: 2%;bottom: 2%; background:#c8385a;  color: #fff0f5;">
+                        </form>
+                    {% else %}
+                        <div class="buttons">
+                        <form action='' method="get">
+                            <input type="hidden" name="to_rate" value={{ events['event_id'].values[i] }}>
+                            <input type="submit" value="Оценить мероприятие"
+                                   style="position: absolute; left: 2%;bottom: 2%; background:#d6a609;  color: #fff0f5;">
+                        </form>
+                    {% endif %}
+                {% endif %}
+            <form action='' method="get">
+                <input type="hidden" name="choice_event" value={{ events['event_id'].values[i] }}>
+                <input type="submit" value="Подробнее"
+                       style="position: absolute; right: 2%;bottom: 2%; background:#fc6c85;  color: #fff0f5;">
+            </form>
+            </div>
+
+            </div>
+            {% endfor %}
+            </div>
+
+    </form>
 {% endmacro %}

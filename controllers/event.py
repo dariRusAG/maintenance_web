@@ -2,7 +2,6 @@ from app import app
 from flask import render_template, request, session, make_response
 from utils import get_db_connection
 from models.event_model import *
-from datetime import datetime
 
 @app.route('/', methods=['GET', 'POST'])
 def event():
@@ -35,10 +34,6 @@ def event():
             user_login = True
             session['remember_id'] = event_id
 
-        # нажата кнопка войти
-    elif request.values.get('user_login'):
-        user_login = True
-
         # если пользователь вышел
     elif request.values.get('user_logout'):
         session.pop('user_id', None)
@@ -57,27 +52,29 @@ def event():
         event_id = int(request.values.get('cancel'))
         to_cancel(conn,session['user_id'],event_id)
 
-    # нажата кнопка войти
+        # нажата кнопка войти
+    elif request.values.get('user_login'):
+        user_login = True
+
+
     elif request.values.get('login'):
         login = request.values.get('login')
         password = request.values.get('password')
-
-        if df_users["login"].str.contains(login).sum() != 0:
-            if is_correct_password(conn,login) == password:
-                session['user_id'] = df_users[df_users["login"] == login].values[0][0]
+        print(login)
+        match is_correct_login_and_password(conn, login, password):
+            case "user":
+                session['user_id'] = f'{get_user_id(conn, login)}'
+                session['user_role'] = "user"
                 if 'remember_id' in session:
                     if len(is_was_registarte_to_event(conn, session['user_id'], session['remember_id'])) == 0:
                         to_registrate(conn, session['user_id'], session['remember_id'])
                     session.pop('remember_id', None)
-
-            else:
+            case "admin":
+                session['user_id'] = f'{get_user_id(conn, login)}'
+                session['user_role'] = "admin"
+            case "error":
                 error_info = True
                 user_login = True
-        elif login != "":
-            error_info = True
-            user_login = True
-
-
 
     # нажата кнопка Очистить
     if request.form.get('clear'):
@@ -120,6 +117,10 @@ def event():
             session['start_time'] = start_time
         if end_time != '':
             session['end_time'] = end_time
+
+    # если пользователь не вошел, то он гость
+    if 'user_id' not in session:
+        session['user_role'] = "guest"
 
     # ивенты пользователя (для кнопки отмены)
     if 'user_id' in session:
@@ -164,10 +165,6 @@ def event():
             (df_event['start_time'] >= session['start_time'])) & (df_event['end_time'] <= session['end_time']) & (
             (df_event['beginning_date'] >= session['start_date'])) & (df_event['expiration_date'] <= session['end_date'])]
 
-    if 'user_id' in session:
-        user_session = True
-    else:
-        user_session = False
 
     html = render_template(
         'event.html',
@@ -181,9 +178,9 @@ def event():
         info_=info_,
         user_login=user_login,
         error_info=error_info,
-        user_session=user_session,
         user_event_list=df_user_event,
         participants_list=df_participants,
+        user_role=session['user_role'],
         len=len
     )
 

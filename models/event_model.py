@@ -1,5 +1,15 @@
 import pandas as pd
 
+def is_correct_login_and_password(conn, login, password):
+    try:
+        return pd.read_sql('''
+        SELECT user_role
+        FROM user
+        WHERE login = :login AND password = :password;
+        ''', conn, params={"login": login, "password": password}).values[0][0]
+
+    except IndexError:
+        return "error"
 
 def get_theme(conn):
     return pd.read_sql('''
@@ -83,9 +93,14 @@ def get_users(conn):
     return pd.read_sql(f'''SELECT * FROM user
     ''', conn)
 
-def get_user_id(conn,login,password):
-    return pd.read_sql(f'''SELECT user_if FROM user WHERE login = {login} AND password = {password}
-    ''', conn).values[0][0]
+def get_user_id(conn, login):
+    try:
+        return pd.read_sql('''SELECT user_id 
+        FROM user
+        WHERE login = :login
+        ''', conn, params={"login": login}).values[0][0]
+    except IndexError:
+        return "error"
 
 def to_registrate(conn,user_id,event_id):
     cur = conn.cursor()

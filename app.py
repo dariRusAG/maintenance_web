@@ -1,4 +1,4 @@
-from flask import Flask, session
+from flask import Flask
 
 
 
@@ -8,3 +8,4 @@ app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
 import controllers.event
 import controllers.profile
+import controllers.admin_profile
