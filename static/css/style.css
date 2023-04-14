@@ -506,10 +506,10 @@ p4 {
 
 .suggest_panel {
     background: white;
-    height: auto;
+    height: 85vh;
     border-radius: 10px;
-     width: 80vw;
-    margin-left: 10%;
+     width: 40vw;
+    margin-left: 30%;
 }
 
 .suggest_panel_data {
@@ -518,7 +518,6 @@ p4 {
         justify-content: space-evenly;
     margin-left: 1%;
     margin-top: 1%;
-    width: 80vw;
 }
 
 .all_events_box_suggest {

@@ -19,6 +19,12 @@ def event():
     if request.values.get('choice_event'):
         event_id = int(request.values.get('choice_event'))
 
+    # Начальная инициализация session
+    if 'type_auth' not in session:
+        session['type_auth'] = []
+    if 'reg' not in session:
+        session['reg'] = []
+
     # Регистрация пользователя на мероприятие
     elif request.values.get('registration'):
         event_id = int(request.values.get('registration'))
@@ -204,15 +210,11 @@ def event():
 
     df_event = df_event[((df_event['type_name'].isin(session['types'])) | (len(session['types']) == 0)) & (
             (df_event['theme_name'].isin(session['themes'])) | (len(session['themes']) == 0)) & (
-                                (df_event['organizer_name'].isin(session['organizers'])) | (
-                                    len(session['organizers']) == 0)) & (
-                                (df_event['location_name'].isin(session['locations'])) | (
-                                    len(session['locations']) == 0)) & (
-                                (df_event['status_name'].isin(session['status'])) | (len(session['status']) == 0)) & (
-                            (df_event['start_time'] >= session['start_time'])) & (
-                                    df_event['end_time'] <= session['end_time']) & (
-                            (df_event['beginning_date'] >= session['start_date'])) & (
-                                    df_event['expiration_date'] <= session['end_date'])]
+            (df_event['organizer_name'].isin(session['organizers'])) | (len(session['organizers']) == 0)) & (
+            (df_event['location_name'].isin(session['locations'])) | (len(session['locations']) == 0)) & (
+            (df_event['status_name'].isin(session['status'])) | (len(session['status']) == 0)) & (
+            (df_event['start_time'] >= session['start_time'])) & (df_event['end_time'] <= session['end_time']) & (
+            (df_event['beginning_date'] >= session['start_date'])) & (df_event['expiration_date'] <= session['end_date'])]
 
     html = render_template(
         'event.html',
