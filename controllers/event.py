@@ -12,7 +12,6 @@ def event():
     error_info = False
 
     event_id = 1
-    info_ = 0
     df_users = get_users(conn)
     sort = 0
 
@@ -24,7 +23,6 @@ def event():
         # нажата кнопка подробнее
     if request.values.get('choice_event'):
         event_id = int(request.values.get('choice_event'))
-        info_ = 1
 
         # нажата кнопка участия
     elif request.values.get('registration'):
@@ -188,6 +186,7 @@ def event():
             (df_event['start_time'] >= session['start_time'])) & (df_event['end_time'] <= session['end_time']) & (
             (df_event['beginning_date'] >= session['start_date'])) & (df_event['expiration_date'] <= session['end_date'])]
 
+
     html = render_template(
         'event.html',
         theme_list=df_theme,
@@ -197,7 +196,6 @@ def event():
         status_list=df_status,
         events=df_event,
         event_info=event_info,
-        info_=info_,
         user_login=user_login,
         error_info=error_info,
         user_event_list=df_user_event,

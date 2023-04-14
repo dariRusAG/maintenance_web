@@ -2,6 +2,7 @@
 body {
     background-color: #ffd1d9;
 }
+
 /* бокс для всего контента под меню */
 .box_for_all {
     background-color: #f1f1f1;
@@ -146,7 +147,7 @@ p3 {
     bottom: 0;
     left: 0;
     /*background: rgb(253, 221, 230); !* цвет фона *!*/
-    background: rgba(0,0,0,0.5); /* цвет фона */
+    background: rgba(0, 0, 0, 0.5); /* цвет фона */
     z-index: 1050;
     opacity: 0; /* по умолчанию модальное окно прозрачно */
     transition: opacity 200ms ease-in; /* анимация перехода */
@@ -154,18 +155,18 @@ p3 {
     margin: 0;
     padding: 0;
 
-/*margin-left:30%;*/
-/*margin-top:2%;*/
-/*width:40%;*/
-/*height:auto;*/
-/*outline: 3px solid #fc6c85;*/
-/*font-size: 15px;
-*/
-/*padding: 7px;*/
-/*border: none;*/
-/*text-align: left;*/
-/*border-top: 3px solid #fff;*/
-/*border-bottom: 3px solid #fc6c85;*/
+    /*margin-left:30%;*/
+    /*margin-top:2%;*/
+    /*width:40%;*/
+    /*height:auto;*/
+    /*outline: 3px solid #fc6c85;*/
+    /*font-size: 15px;
+    */
+    /*padding: 7px;*/
+    /*border: none;*/
+    /*text-align: left;*/
+    /*border-top: 3px solid #fff;*/
+    /*border-bottom: 3px solid #fc6c85;*/
 
 }
 
@@ -183,10 +184,10 @@ p3 {
 }
 
 @media (min-width: 576px) {
-  .modal-dialog {
-      max-width: 580px;
-      margin: 30px auto; /* для отображения модального окна по центру */
-  }
+    .modal-dialog {
+        max-width: 580px;
+        margin: 30px auto; /* для отображения модального окна по центру */
+    }
 }
 
 /* свойства для блока, содержащего контент модального окна */
@@ -203,9 +204,9 @@ p3 {
 }
 
 @media (min-width: 768px) {
-  .modal-content {
-      box-shadow: 0 5px 15px rgba(0,0,0,.5);
-  }
+    .modal-content {
+        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
+    }
 }
 
 /*.info_about_event_gray {*/
@@ -254,6 +255,7 @@ p3 {
     opacity: .5;
     text-decoration: none;
 }
+
 /* свойства для кнопки "Закрыть" при нахождении её в фокусе или наведении */
 .close:focus, .close:hover {
     color: #000;
@@ -264,7 +266,7 @@ p3 {
 
 /* свойства для блока, содержащего основное содержимое окна */
 .modal-body {
-  position: relative;
+    position: relative;
     flex: 1 1 auto;
     overflow: auto;
     display: block;
@@ -441,7 +443,7 @@ p4 {
     display: flex;
     flex-direction: row;
     height: 83vh;
-    overflow: auto
+    overflow: auto;
 }
 
 .admin_panel_left {
@@ -519,6 +521,7 @@ p4 {
     width: 100%;
     margin-bottom: 15px;
 }
+
 .rate_big_box {
     display: flex;
     flex-direction: row;
@@ -543,7 +546,7 @@ p4 {
     margin: 15px 15px;
 }
 
-.cool_text{
+.cool_text {
     color: crimson;
 }
 
@@ -556,7 +559,7 @@ p4 {
 }
 
 .edit_small_box {
-        display: flex;
+    display: flex;
     flex-direction: row;
     width: 80%;
     word-wrap: break-word;
@@ -565,4 +568,29 @@ p4 {
     font-size: 14px;
 }
 
+.suggest_panel {
+    background: white;
+    height: auto;
+    border-radius: 10px;
+     width: 80vw;
+    margin-left: 10%;
+}
+
+.suggest_panel_data {
+    display: flex;
+    flex-direction: row;
+        justify-content: space-evenly;
+    margin-left: 1%;
+    margin-top: 1%;
+    width: 80vw;
+}
+
+.all_events_box_suggest {
+    width: 77vw;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    overflow-y: scroll;
+    height: 74vh;
+}
 

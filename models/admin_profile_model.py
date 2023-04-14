@@ -2,19 +2,19 @@ import pandas as pd
 
 
 def add_new_event(conn, event_name, theme_id, type_id, participants, beginning_date, expiration_date, start_time,
-                  end_time, organizer_id, location_id, description, status_id):
+                  end_time, organizer_id, location_id, description, status_id, picture):
     cur = conn.cursor()
     cur.execute(f'''
-    INSERT INTO event(event_name,theme_id,type_id,participants,beginning_date,expiration_date,start_time,end_time,organizer_id,location_id,description,status_id,status) 
-    VALUES (:event_name,:theme_id,:type_id,:participants,:beginning_date,:expiration_date,:start_time,:end_time,:organizer_id,:location_id,:description,:status_id,'current')
+    INSERT INTO event(event_name,theme_id,type_id,participants,beginning_date,expiration_date,start_time,end_time,organizer_id,location_id,description,status_id,status, picture) 
+    VALUES (:event_name,:theme_id,:type_id,:participants,:beginning_date,:expiration_date,:start_time,:end_time,:organizer_id,:location_id,:description,:status_id,'current', :picture)
      ''', {"event_name": event_name, "theme_id": theme_id, "type_id": type_id, "participants": participants,
            "beginning_date": beginning_date, "expiration_date": expiration_date, "start_time": start_time,
            "end_time": end_time, "organizer_id": organizer_id, "location_id": location_id, "description": description,
-           "status_id": status_id})
+           "status_id": status_id, "picture": picture})
     conn.commit()
     return cur.lastrowid
 
-def update_event(conn, event_id, event_name, theme_id, type_id, participants, beginning_date, expiration_date, start_time, end_time, organizer_id, location_id, description, status_id):
+def update_event(conn, event_id, event_name, theme_id, type_id, participants, beginning_date, expiration_date, start_time, end_time, organizer_id, location_id, description, status_id, picture):
     cur = conn.cursor()
     cur.execute('''
     UPDATE event
@@ -30,12 +30,13 @@ def update_event(conn, event_id, event_name, theme_id, type_id, participants, be
         organizer_id= :organizer_id,
         location_id= :location_id,
         description= :description,
-        status_id= :status_id
+        status_id= :status_id,
+        picture= :picture
     WHERE event_id = :event_id
     ''', {"event_id": event_id, "event_name": event_name, "theme_id": theme_id, "type_id": type_id, "participants": participants,
            "beginning_date": beginning_date, "expiration_date": expiration_date, "start_time": start_time,
            "end_time": end_time, "organizer_id": organizer_id, "location_id": location_id, "description": description,
-           "status_id": status_id})
+           "status_id": status_id, "picture": picture})
     return conn.commit()
 
 def get_location_by_id(conn):
@@ -135,3 +136,29 @@ def get_status_for_admin(conn):
 status_name as name
 FROM status
 ''', conn)
+
+def get_suggest_event(conn):
+    return pd.read_sql(f'''SELECT event_name,theme_name,type_name,participants, 
+    strftime('%d.%m.%Y',beginning_date) as beginning_dat,strftime('%d.%m.%Y',expiration_date) as expiration_dat,
+    start_time,end_time,organizer_name,location_name,venue_name, description, status_name,status_id,event_id,beginning_date,expiration_date,picture, mail
+    FROM event 
+    LEFT JOIN theme USING (theme_id) 
+    LEFT JOIN type USING (type_id) 
+    LEFT JOIN organizer USING (organizer_id) 
+    LEFT JOIN location USING (location_id) 
+    LEFT JOIN venue USING (venue_id) 
+    LEFT JOIN status USING (status_id)
+    WHERE status = 'suggest'
+    ORDER BY status_id,strftime('%Y-%m-%d',beginning_date) DESC, event_name
+    ''', conn)
+
+
+def update_suggest_event(conn, event_id):
+    cur = conn.cursor()
+    cur.execute('''
+    UPDATE event
+    SET 
+        status= 'current'
+    WHERE event_id = :event_id
+    ''', {"event_id": event_id})
+    return conn.commit()

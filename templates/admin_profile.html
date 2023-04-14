@@ -32,7 +32,7 @@
     <div class="admin_panel_right">
         {% if admin_panel_button == 'Добавление' %}
             <div class="admin_panel_right_data">
-                {{ macros.admin_panel_add(theme_list, type_list, organizer_list, location_list, status_list, len) }}
+                {{ macros.admin_panel_add(theme_list, type_list, organizer_list, location_list, status_list, len, "admin") }}
             </div>
         {% elif admin_panel_button == 'Редактирование' %}
             <div class="admin_panel_right_data">
@@ -44,9 +44,11 @@
             </div>
         {% elif admin_panel_button == 'Предложения' %}
             <div class="admin_panel_right_data">
-                {{ macros.admin_panel_new() }}
+                {{ macros.admin_panel_new(suggest_event, len) }}
             </div>
         {% endif %}
+
+    {{ macros.event_info(one_event_info, participants_list, "admin_profile", len) }}
 
     </div>
 </div>

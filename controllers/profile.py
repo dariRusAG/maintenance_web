@@ -25,7 +25,6 @@ def profile():
         # нажата кнопка подробнее
     elif request.values.get('choice_event'):
         event_id = int(request.values.get('choice_event'))
-        info_ = 1
 
 
     if request.values.get('to_rate_event'):

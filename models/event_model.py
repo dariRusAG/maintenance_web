@@ -72,6 +72,7 @@ def get_event(conn):
     LEFT JOIN location USING (location_id) 
     LEFT JOIN venue USING (venue_id) 
     LEFT JOIN status USING (status_id)
+    WHERE status = 'current'
     ORDER BY status_id,strftime('%Y-%m-%d',beginning_date) DESC, event_name
     ''', conn)
 
