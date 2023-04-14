@@ -6,7 +6,6 @@ con = sqlite3.connect("event_db.sqlite")
 
 
 con.executescript('''
-
 CREATE TABLE IF NOT EXISTS user(
 user_id INTEGER PRIMARY KEY AUTOINCREMENT,
 login VARCHAR(30),
