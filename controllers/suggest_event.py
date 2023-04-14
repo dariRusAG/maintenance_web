@@ -15,6 +15,7 @@ def suggest_event():
     df_location = get_location_for_admin(conn)
     df_status = get_status_for_admin(conn)
 
+    # Отправка предложенного мероприятия на рассмотрение администратору
     if request.values.get('add_suggest_event'):
         location_name = df_location.loc[int(request.values.get('location')) - 1][0]
         venue_name = str(request.values.get('new_event_venue'))
