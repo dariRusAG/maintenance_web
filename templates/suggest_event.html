@@ -5,23 +5,21 @@
     <title>Афиша мероприятий</title>
     {% import "macros.html" as macros %}
 </head>
-<body>
-<div class=menu>
-    <ul>
-        <li class=active><a href={{ url_for("event") }}>Афиша</a></li>
-        <li class=active><a href={{ url_for("profile") }}>Личный кабинет</a></li>
-    </ul>
-</div>
 
-<div class="suggest_panel">
-    <div class="suggest_panel_data">
-        <br>
-        <div class="admin_panel_right_data_text">
-            {{ macros.admin_panel_add(theme_list, type_list, organizer_list, location_list, status_list, len, "suggest") }}
+<body>
+    <div class=menu>
+        <ul>
+            <li class=active><a href="{{ url_for("event") }}">Афиша</a></li>
+            <li class=active><a href="{{ url_for("profile") }}">Личный кабинет</a></li>
+        </ul>
+    </div>
+
+    <div class="suggest_panel">
+        <div class="suggest_panel_data"><br>
+            <div class="admin_panel_right_data_text">
+                {{ macros.admin_panel_add(theme_list, type_list, organizer_list, location_list, status_list, len, "suggest") }}
+            </div>
         </div>
     </div>
-</div>
-
-
 </body>
 </html>

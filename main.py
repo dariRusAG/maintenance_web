@@ -1,9 +1,6 @@
 import sqlite3
-import pandas as pd
 
-# создаем базу данных и устанавливаем соединение с ней
 con = sqlite3.connect("event_db.sqlite")
-
 
 con.executescript('''
 CREATE TABLE IF NOT EXISTS users(
@@ -175,10 +172,6 @@ VALUES
 (6,'Корпус D'),
 (12,'Корпус D');
 
-''')
-
-
-con.executescript('''
 INSERT INTO event (event_name,theme_id,type_id,participants,beginning_date,expiration_date,start_time,end_time,organizer_id,location_id,description,status_id, status, picture)
 VALUES
 ('Язык китайского Интернета',12,6,30,'2022-12-27','2022-12-27','16:00','17:30',4,2,'Если вы давно хотели узнать о лексике, употребляемой в китайской интернет-коммуникации и её особенностях, то вы найдёте все ответы на лекции от старшего преподавателя кафедры китаеведения Александра Николаевича Сбоева.',1, 'current', '/static/image/Язык%20китайского%20Интернета.jpg'),
@@ -204,9 +197,7 @@ VALUES
 ('Традиционная игра "Мафия"',13,3,12,'2023-01-24','2023-01-25','18:00','20:00',3,14,'Сыграй с нами в всеми любимую мафию. Найди мафию среди людей, который только что стали тебе друзьяи',1, 'current', '/static/image/Традиционная%20игра%20Мафия.jpg'),
 ('Лекция про развитие AI',4,6,30,'2022-12-29','2022-12-29','15:00','16:30',3,2,'Лекция об изменения и новвоведениях в AI. Новые технологии. Новые способы развития. Ждет ли нас восстание машин???',2, 'current', '/static/image/Лекция%20про%20развитие%20AI.jpg'),
 ('Новый год с Дедом морозом-программистом',4,6,3,'2022-12-30','2022-12-30','19:00','19:30',3,1,'Проведи Новый год вместе с айтишниками! Конкурсы, Дед Мороз-программист и многое другое ждет тебя здесь!',1, 'current', '/static/image/Новый%20год%20с%20Дедом%20морозом-программистом.jpg');
-''')
 
-con.executescript('''
 INSERT INTO user_event (event_id,user_id, rate)
 VALUES
 (1,4,'None'),
@@ -233,75 +224,5 @@ VALUES
 (8,5,'None'),
 (6,5,'None');
 ''')
-
-
-# df = pd.read_sql('''
-# SELECT * FROM venue;
-# ''',con)
-# print(df)
-# df = pd.read_sql('''
-# SELECT * FROM user;
-# ''',con)
-# print(df)
-# df = pd.read_sql('''
-# SELECT * FROM theme;
-# ''',con)
-# print(df)
-# df = pd.read_sql('''
-# SELECT * FROM type;
-# ''',con)
-# print(df)
-# df = pd.read_sql('''
-# SELECT * FROM organizer;
-# ''',con)
-# print(df)
-# df = pd.read_sql('''
-# SELECT * FROM location;
-# ''',con)
-# print(df)
-# df = pd.read_sql('''
-# SELECT * FROM status;
-# ''',con)
-# print(df)
-# df = pd.read_sql('''
-# SELECT * FROM event;
-# ''',con)
-# print(df)
-#
-# df = pd.read_sql('''
-# SELECT * FROM user_event;
-# ''',con)
-# print(df)
-# login = "user"
-# df = pd.read_sql(f'''
-# SELECT *
-#     FROM user
-#     ;
-# ''',con)
-# print(df)
-# if len(df[df['login'] == 'nakao.pd']) != 0:
-#     print(231)
-#
-# login = 'nakao.pd'
-#
-# df = pd.read_sql(f'''
-# SELECT password
-#     FROM user
-#     WHERE login = :login;
-# ''',con,params={"login":login})
-# print(df)
-
-# df = pd.read_sql('''
-# SELECT
-# category_name AS Категория,
-# SUM(money) AS Трата,
-# strftime('%d',spending_date) AS Дата
-# FROM spending
-# JOIN category USING (category_id)
-# WHERE strftime('%m',`spending_date`) = strftime('%m','now') AND strftime('%Y',`spending_date`) = strftime('%Y','now')
-# GROUP BY spending_date
-# ORDER BY spending_date
-# ''', con)
-# print(df)
 
 con.commit()

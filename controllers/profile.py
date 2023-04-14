@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, session, make_response
+from flask import render_template, request, session
 from utils import get_db_connection
 from models.profile_model import *
 from models.event_model import get_event_info,get_participants
@@ -8,43 +8,47 @@ from models.event_model import get_event_info,get_participants
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     conn = get_db_connection()
+
+    # Начальная инициализация параметров
     info_ = 0
     rate_window = False
     event_id = 0
 
-        # нажата кнопка отменить
-    if request.values.get('cancel'):
-        event_id = int(request.values.get('cancel'))
-        to_cancel(conn,session['user_id'],event_id)
-
-        # нажата кнопка оценить
-    elif request.values.get('to_rate'):
-        session['remember_id_'] = int(request.values.get('to_rate'))
-        rate_window = True
-        # нажата кнопка отправить оценку
-
-        # нажата кнопка подробнее
-    elif request.values.get('choice_event'):
-        event_id = int(request.values.get('choice_event'))
-
-    if request.values.get('to_rate_event'):
-        rate_box = request.values.get('rate_box')
-        rate_text= request.values.get('rate_text')
-        rate = "Оценка: " + rate_box+" Комментарий: " + rate_text
-        if 'remember_id_' in session:
-            to_rate(conn,session['remember_id_'],rate,session['user_id'])
-            session.pop('remember_id_', None)
-
+    # Начальная инициализация session
     if 'status_user' not in session:
         session['status_user'] = []
 
-    # нажата кнопка Очистить
+    # Отмена регистрации пользователя на мероприятии
+    if request.values.get('cancel'):
+        event_id = int(request.values.get('cancel'))
+        to_cancel(conn, session['user_id'], event_id)
+
+    # Оценка мероприятия пользователя
+    elif request.values.get('to_rate'):
+        session['remember_id_'] = int(request.values.get('to_rate'))
+        rate_window = True
+
+    # Просмотр подробной информации о мероприятии
+    elif request.values.get('choice_event'):
+        event_id = int(request.values.get('choice_event'))
+
+    # Отправить отзыв о мероприятии
+    if request.values.get('to_rate_event'):
+        rate_box = request.values.get('rate_box')
+        rate_text = request.values.get('rate_text')
+        rate = "Оценка: " + rate_box+" Комментарий: " + rate_text
+        if 'remember_id_' in session:
+            to_rate(conn, session['remember_id_'], rate, session['user_id'])
+            session.pop('remember_id_', None)
+
+    # Очистка фильтров поиска
     if request.form.get('clear'):
         status = []
         session['status_user'] = []
     else:
         status = request.form.getlist("Статус мероприятия")
 
+    # Поиск мероприятий по фильтрам
     if request.form.get('search'):
         session['status_user'] = status
 
@@ -54,6 +58,7 @@ def profile():
     df_participants = get_participants(conn)
     df_event = df_event[((df_event['status_name'].isin(session['status_user'])) | (len(session['status_user']) == 0))]
 
+    # Способы сортировки
     title = request.values.get('list')
     if title == 'Отсортировать по алфавиту ↓':
         sort = 'event_name DESC'

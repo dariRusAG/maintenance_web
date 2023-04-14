@@ -7,35 +7,28 @@ from models.event_model import *
 @app.route('/', methods=['GET', 'POST'])
 def event():
     conn = get_db_connection()
-    # переменная для окна входа
+
+    # Начальная инициализация параметров
     user_login = False
-    # неправильный логин
     error_info = False
 
     event_id = 1
-    df_users = get_users(conn)
-    sort = 0
     text = ''
 
-        # нажата кнопка Найти
-    # if request.values.get('status'):
-    #     status = int(request.values.get('status'))
-
-
-        # нажата кнопка подробнее
+    # Просмотр подробной информации о мероприятии
     if request.values.get('choice_event'):
         event_id = int(request.values.get('choice_event'))
 
-        # нажата кнопка участия
+    # Регистрация пользователя на мероприятие
     elif request.values.get('registration'):
         event_id = int(request.values.get('registration'))
         if 'user_id' in session:
-            to_registrate(conn,session['user_id'],event_id)
+            to_registrate(conn, session['user_id'], event_id)
         else:
             user_login = True
             session['remember_id'] = event_id
 
-        # если пользователь вышел
+    # Выход из учетной записи
     elif request.values.get('user_logout'):
         session.pop('user_id', None)
         session['types'] = []
@@ -48,19 +41,18 @@ def event():
         session['start_time'] = "00:00"
         session['end_time'] = "23:59"
 
-        # нажата кнопка отменить
+    # Отмена регистрации пользователя на мероприятии
     elif request.values.get('cancel'):
         event_id = int(request.values.get('cancel'))
-        to_cancel(conn,session['user_id'],event_id)
+        to_cancel(conn, session['user_id'], event_id)
 
-        # нажата кнопка войти
+    # Открытие окна авторизации/регистрации
     elif request.values.get('user_login'):
         user_login = True
         session['type_auth'] = 'Войти'
         session['reg'] = 'Еще нет аккаунта?'
-        # session['type_auth'] = request.values.get('type_auth')
-        # session['reg'] = request.values.get('reg')
 
+    # Переключение окон регистрация/авторизация
     if request.values.get('reg'):
         if session['type_auth'] == 'Войти':
             session['type_auth'] = 'Зарегистрироваться'
@@ -69,6 +61,7 @@ def event():
             session['type_auth'] = 'Войти'
             session['reg'] = 'Еще нет аккаунта?'
 
+    # Авторизация пользователя
     if request.values.get('type_auth') == 'Войти':
         login = request.values.get('login')
         password = request.values.get('password')
@@ -88,22 +81,22 @@ def event():
                 user_login = True
                 text = "Неверно введен логин или пароль"
 
+    # Регистрация нового пользователя
     elif request.values.get('type_auth') == 'Зарегистрироваться':
         login = request.values.get('login')
         password = request.values.get('password')
         if get_user_id(conn, login) == "error":
             add_user(conn, login, password)
-            # session['user_id'] = f'{get_user_id(conn, login)}'
-            # session['user_role'] = "user"
             text = "Регистрация прошла успешно"
         else:
             text = "Пользователь с таким логином уже существует"
 
+    # Удаление учетной записи
     if request.values.get('remove_profile_button'):
         to_delete_user(conn, session['user_id'])
         session.pop('user_id', None)
 
-    # нажата кнопка Очистить
+    # Очистка фильтров поиска
     if request.form.get('clear'):
         types = []
         themes = []
@@ -130,6 +123,7 @@ def event():
         start_time = request.form.get("start_time")
         end_time = request.form.get("end_time")
 
+    # Поиск мероприятий по фильтрам
     if request.form.get('search'):
         session['types'] = types
         session['themes'] = themes
@@ -137,7 +131,7 @@ def event():
         session['locations'] = locations
         session['status'] = status
         if start_date != '':
-            session['start_date'] = start_date[6:11] + "-" + start_date[3:5]+ "-" + start_date[0:2]
+            session['start_date'] = start_date[6:11] + "-" + start_date[3:5] + "-" + start_date[0:2]
         if end_date != '':
             session['end_date'] = end_date[6:11] + "-" + end_date[3:5] + "-" + end_date[0:2]
         if start_time != '':
@@ -145,17 +139,18 @@ def event():
         if end_time != '':
             session['end_time'] = end_time
 
-    # если пользователь не вошел, то он гость
+    # Инициализация неавторизованного пользователя как гостя
     if 'user_id' not in session:
         session['user_role'] = "guest"
 
-    # ивенты пользователя (для кнопки отмены)
+    # Отображение мероприятий авторизованного пользователя
     if 'user_id' in session:
-        df_user_event = get_user_events_only_id(conn,session['user_id'])
+        df_user_event = get_user_events_only_id(conn, session['user_id'])
         df_user_event = df_user_event.values.tolist()
     else:
         df_user_event = []
 
+    # Начальная инициализация session
     if 'types' not in session:
         session['types'] = []
     if 'themes' not in session:
@@ -184,6 +179,7 @@ def event():
     df_participants = get_participants(conn)
     df_event = get_event(conn)
 
+    # Способы сортировки
     title = request.values.get('list')
     if title == 'Отсортировать по алфавиту ↓':
         sort = 'event_name DESC'
@@ -208,12 +204,15 @@ def event():
 
     df_event = df_event[((df_event['type_name'].isin(session['types'])) | (len(session['types']) == 0)) & (
             (df_event['theme_name'].isin(session['themes'])) | (len(session['themes']) == 0)) & (
-            (df_event['organizer_name'].isin(session['organizers'])) | (len(session['organizers']) == 0)) & (
-            (df_event['location_name'].isin(session['locations'])) | (len(session['locations']) == 0)) & (
-            (df_event['status_name'].isin(session['status'])) | (len(session['status']) == 0)) & (
-            (df_event['start_time'] >= session['start_time'])) & (df_event['end_time'] <= session['end_time']) & (
-            (df_event['beginning_date'] >= session['start_date'])) & (df_event['expiration_date'] <= session['end_date'])]
-
+                                (df_event['organizer_name'].isin(session['organizers'])) | (
+                                    len(session['organizers']) == 0)) & (
+                                (df_event['location_name'].isin(session['locations'])) | (
+                                    len(session['locations']) == 0)) & (
+                                (df_event['status_name'].isin(session['status'])) | (len(session['status']) == 0)) & (
+                            (df_event['start_time'] >= session['start_time'])) & (
+                                    df_event['end_time'] <= session['end_time']) & (
+                            (df_event['beginning_date'] >= session['start_date'])) & (
+                                    df_event['expiration_date'] <= session['end_date'])]
 
     html = render_template(
         'event.html',
@@ -233,7 +232,6 @@ def event():
         title=title,
         type_auth=session['type_auth'],
         reg=session['reg'],
-        df_users=df_users,
         text=text
     )
 

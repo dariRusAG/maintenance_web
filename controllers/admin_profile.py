@@ -8,6 +8,8 @@ from models.admin_profile_model import *
 @app.route('/admin_profile', methods=['GET', 'POST'])
 def admin_profile():
     conn = get_db_connection()
+
+    # Начальная инициализация параметров
     admin_panel_button = None
     df_theme = get_theme_for_admin(conn)
     df_type = get_type_for_admin(conn)
@@ -16,7 +18,6 @@ def admin_profile():
     df_status = get_status_for_admin(conn)
     df_user_event = get_users_events(conn)
     detailed_info = False
-    user_rate = None
     checked_value = False
 
     if 'event_id' not in session:
@@ -70,12 +71,6 @@ def admin_profile():
         admin_panel_button = "Предложения"
         delete_event(conn, session['event_id'])
 
-
-    #     # нажата кнопка закрыть окно подробнее
-    # elif request.values.get('close'):
-    #     admin_panel_button = "Редактирование"
-    #     detailed_info = False
-
     # нажата кнопка редактирования мероприятия
     elif request.values.get('is_edit_event'):
         checked_value = True
@@ -103,11 +98,11 @@ def admin_profile():
                      int(get_location_id(conn, venue_id, location_name)), request.values.get('edit_event_description'),
                      request.values.get('edit_status'), request.values.get('edit_event_picture'))
 
-
     event_info = get_event_info(conn, session['event_id'])
     df_event = get_event(conn)
     df_participants = get_participants(conn)
     df_suggest_event = get_suggest_event(conn)
+
     html = render_template(
         'admin_profile.html',
         admin_panel_button=admin_panel_button,

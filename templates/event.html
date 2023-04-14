@@ -6,233 +6,246 @@
     {% import "macros.html" as macros %}
 </head>
 <body>
-<div class=menu>
-    <ul>
-        <li class=active>Афиша</li>
-        {% if user_role == "guest" %}
-            <form action="{{ url_for('event') }}#open_user" method="get">
-                <input type="submit" name="user_login" value="Войти"
-                       style="background:#fc6c85;  color: #fff0f5; height:100%; border: none;">
-            </form>
-        {% elif user_role == "user" %}
-            <li class=active><a href={{ url_for("profile") }}>Личный кабинет</a></li>
-        {% elif user_role == "admin" %}
-            <li class=active><a href={{ url_for("admin_profile") }}>Личный кабинет</a></li>
-        {% endif %}
-    </ul>
-</div>
-<div class="sort">
-    <form action='{{ url_for('event') }}' method="post">
-        <select name="list">
-            <option {% if title == 'None' or title == 'Рекомендуемая сортировка' %} selected {% endif %}>Рекомендуемая сортировка</option>
-            <option {% if title == 'Отсортировать по алфавиту ↓' %} selected {% endif %}>Отсортировать по алфавиту ↓</option>
-            <option {% if title == 'Отсортировать по алфавиту ↑' %} selected {% endif %}>Отсортировать по алфавиту ↑</option>
-            <option {% if title == 'Отсортировать по дате ↓' %} selected {% endif %}>Отсортировать по дате ↓</option>
-            <option {% if title == 'Отсортировать по дате ↑' %} selected {% endif %}>Отсортировать по дате ↑</option>
-            <option {% if title == 'Отсортировать по статусу ↓' %} selected {% endif %}>Отсортировать по статусу ↓</option>
-            <option {% if title == 'Отсортировать по статусу ↑' %} selected {% endif %}>Отсортировать по статусу ↑</option>
-        </select>
-		<input type="submit" value="Отсортировать">
-    </form>
-</div>
+    <div class=menu>
+        <ul>
+            <li class=active>Афиша</li>
+            {% if user_role == "guest" %}
+                <form action="{{ url_for('event') }}#open_user" method="get">
+                    <input type="submit" name="user_login" value="Войти">
+                </form>
+            {% elif user_role == "user" %}
+                <li class=active><a href="{{ url_for("profile") }}">Личный кабинет</a></li>
+            {% elif user_role == "admin" %}
+                <li class=active><a href="{{ url_for("admin_profile") }}">Личный кабинет</a></li>
+            {% endif %}
+        </ul>
+    </div>
 
-{#<input type="submit" name="sort_recom" value="Рекомендуемая сортировка">#}
-{#<input type="submit" name="sort_alphabet" value="Отсортировать по алфавиту">#}
-{#<input type="submit" name="sort_data" value="Отсортировать по дате">#}
-{#<input type="submit" name="sort_status" value="Отсортировать по статусу">#}
-
-<div class=box_for_all>
-    <div class=add_menu>
-        <form action="" method="post">
-            {{ macros.render_table("Тип",type_list,session['types'],len) }}
-            {{ macros.render_table("Тема",theme_list,session['themes'],len) }}
-            {{ macros.render_table("Организатор",organizer_list,session['organizers'],len) }}
-
-            <fieldset>
-                <legend><strong>Дата</strong></legend>
-                С
-                {% if session['start_date'] == "0000-00-00" %}
-                    <input type="text" name="start_date"><br><br>
-                {% else %}
-                    <input type="text" name="start_date"
-                           value="{{ session['start_date'][8:11] + '.' + session['start_date'][5:7]+ '.' + session['start_date'][0:4] }}">
-                    <br><br>
-                {% endif %}
-                По
-                {% if session['end_date'] == "9999-99-99" %}
-                    <input type="text" name="end_date"><br><br>
-                {% else %}
-                    <input type="text" name="end_date"
-                           value="{{ session['end_date'][8:11] + '.' + session['end_date'][5:7]+ '.' + session['end_date'][0:4] }}">
-                    <br><br>
-                {% endif %}
-            </fieldset>
-
-            <fieldset>
-                <legend><strong>Время</strong></legend>
-                С
-                {% if session['start_time'] == "00:00" %}
-                    <input type="text" name="start_time"><br><br>
-                {% else %}
-                    <input type="text" name="start_time" value="{{ session['start_time'] }}"><br><br>
-                {% endif %}
-                По
-                {% if session['end_time'] == "23:59" %}
-                    <input type="text" name="end_time"><br><br>
-                {% else %}
-                    <input type="text" name="end_time" value="{{ session['end_time'] }}"><br><br>
-                {% endif %}
-            </fieldset>
-
-            {{ macros.render_table("Площадка",location_list,session['locations'],len) }}
-            {{ macros.render_table("Статус",status_list,session['status'],len) }}
-            <input type="submit" value="Найти" name="search"
-                   style="background:#fc6c85;  color: #fff0f5; margin-top:10%; margin-left:15%;">
-            <input type="submit" value="Очистить" name="clear"
-                   style="background:#fc6c85;  color: #fff0f5; margin-top:10%; margin-left:10%;">
-            <br><br>
+    <div class="sort">
+        <form action="{{ url_for('event') }}" method="post">
+            <select name="list">
+                <option {% if title == 'None' or title == 'Рекомендуемая сортировка' %} selected {% endif %}>Рекомендуемая сортировка</option>
+                <option {% if title == 'Отсортировать по алфавиту ↓' %} selected {% endif %}>Отсортировать по алфавиту ↓</option>
+                <option {% if title == 'Отсортировать по алфавиту ↑' %} selected {% endif %}>Отсортировать по алфавиту ↑</option>
+                <option {% if title == 'Отсортировать по дате ↓' %} selected {% endif %}>Отсортировать по дате ↓</option>
+                <option {% if title == 'Отсортировать по дате ↑' %} selected {% endif %}>Отсортировать по дате ↑</option>
+                <option {% if title == 'Отсортировать по статусу ↓' %} selected {% endif %}>Отсортировать по статусу ↓</option>
+                <option {% if title == 'Отсортировать по статусу ↑' %} selected {% endif %}>Отсортировать по статусу ↑</option>
+            </select>
+            <input type="submit" value="Отсортировать">
         </form>
     </div>
 
-    <form action="" method="get">
-        <div class="all_events_box">
-            <div class="info">
-                <b>Найдены мероприятия в количестве:</b>
-                {% if len(events.index) == 0 %} ничего не найдено.
-                {% else %}
-                    {{ len(events.index) }}. <b>Из них актуально:</b> {{ len(events[events['status_name'] == 'Актуально']) }}.
-                {% endif %}
-            </div>
+    <div class=box_for_all>
+        <div class=add_menu>
+            <form action="" method="post">
+                {{ macros.render_table("Тип",type_list,session['types'],len) }}
+                {{ macros.render_table("Тема",theme_list,session['themes'],len) }}
+                {{ macros.render_table("Организатор",organizer_list,session['organizers'],len) }}
 
-            <br>
-            {% for i in range(len(events)) %}
-                {% if participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] == null %}
-                    {% set parti = 1 %}
-                {% else %}
-                    {% set parti = participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] %}
-                {% endif %}
-                <div
-                        {% if parti / events['participants'].values[i] * 100 > 30 and parti != events['participants'].values[i] %}
-                            class="container_box_one_event_super"
-                        {% else %}
-                            class="container_box_one_event"
-                        {% endif %}>
-                    {% if events['status_id'].values[i] == 2 %}
-                        <p3 style="color:#c8385a;">
-                            Внимание! Мероприятие было перенесено
-                            на {{ events['beginning_date'].values[i][8:11] + '.' + events['beginning_date'].values[i][5:7]+ '.' + events['beginning_date'].values[i][0:4] }}!
-                        </p3>
-                        <br>
-                    {% endif %}
-                    {% if events['status_id'].values[i] == 3 %}
-                        <p3 style="color:#c8385a;">
-                            Внимание! Мероприятие было отменено!
-                        </p3>
-                        <br>
-                    {% endif %}
-                    {% if events['status_id'].values[i] == 4 %}
-                        <p3 style="color:#c8385a;">
-                            Мероприятие завершено.
-                        </p3>
-                        <br>
-                    {% endif %}
-
-                    <br>Название:
-                    <p3>{{ events['event_name'].values[i] }}</p3>
-                    <br>
-                    <img src="{{events['picture'].values[i]}}" alt="" width="280px" height="auto">
-                    <br>Тип:
-                    <p3>{{ events['type_name'].values[i] }}</p3>
-                    <br>
-                    <br>Тема:
-                    <p3>{{ events['theme_name'].values[i] }}</p3>
-                    <br>
-                    <br>Количество участников:
-                    <p3>{{ events['participants'].values[i] }}</p3>
-                    <br>
-                    <br>Дата:
-                    <p3>{{ events['beginning_dat'].values[i] }}</p3>
-                    <br>
-                    <br>Время:
-                    <p3>{{ events['start_time'].values[i] }}</p3>
-                    <br>
-                    <br>Место проведения:
-                    <p3>{{ events['location_name'].values[i] }}</p3>
-                    <br>
-                    <br>Статус:
-                    {% if (events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4) %}
-                        <p3 style="color:#a52a2a;">{{ events['status_name'].values[i] }}</p3>
+                <fieldset>
+                    <legend><strong>Дата</strong></legend>
+                    С
+                    {% if session['start_date'] == "0000-00-00" %}
+                        <label>
+                            <input type="text" name="start_date">
+                        </label>
+                        <br><br>
                     {% else %}
-                        {% if events['status_id'].values[i] == 1 %}
-                            <p3 style="color:#47a76a;">{{ events['status_name'].values[i] }}</p3>
-                        {% else %}
-                            <p3 style="color:#a98307;">{{ events['status_name'].values[i] }}</p3>
-                        {% endif %}
+                        <label>
+                            <input type="text" name="start_date"
+                                   value="{{ session['start_date'][8:11] + '.' + session['start_date'][5:7]+ '.' + session['start_date'][0:4] }}">
+                        </label>
+                        <br><br>
                     {% endif %}
-                    <br><br>
 
-                    <div class="buttons">
-                        {% if (events['event_id'].values[i] in user_event_list) and (events['status_id'].values[i] == 1) and (user_role != "admin") %}
-                            <form action='' method="get">
-                                <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
-                                <input type="submit" value="Отменить участие"
-                                       style="position: absolute; left: 2%;bottom: 2%; background:#c8385a;  color: #fff0f5;">
-                            </form>
-                        {% else %}
+                    По
+                    {% if session['end_date'] == "9999-99-99" %}
+                        <label>
+                            <input type="text" name="end_date">
+                        </label>
+                        <br><br>
+                    {% else %}
+                        <label>
+                            <input type="text" name="end_date"
+                                   value="{{ session['end_date'][8:11] + '.' + session['end_date'][5:7]+ '.' + session['end_date'][0:4] }}">
+                        </label>
+                        <br><br>
+                    {% endif %}
+                </fieldset>
 
-                            {% if ((events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4)) and (user_role != "admin") %}
-                                <input type="submit" disabled value="Участвовать"
-                                       style="position: absolute; left: 2%;bottom: 2%; background:#ddbec3;  color: #fff0f5;">
+                <fieldset>
+                    <legend><strong>Время</strong></legend>
+                    С
+                    {% if session['start_time'] == "00:00" %}
+                        <label>
+                            <input type="text" name="start_time">
+                        </label>
+                        <br><br>
+                    {% else %}
+                        <label>
+                            <input type="text" name="start_time" value="{{ session['start_time'] }}">
+                        </label>
+                        <br><br>
+                    {% endif %}
+
+                    По
+                    {% if session['end_time'] == "23:59" %}
+                        <label>
+                            <input type="text" name="end_time">
+                        </label>
+                        <br><br>
+                    {% else %}
+                        <label>
+                            <input type="text" name="end_time" value="{{ session['end_time'] }}">
+                        </label>
+                        <br><br>
+                    {% endif %}
+                </fieldset>
+
+                {{ macros.render_table("Площадка",location_list,session['locations'],len) }}
+                {{ macros.render_table("Статус",status_list,session['status'],len) }}
+                <input type="submit" value="Найти" name="search">
+                <input type="submit" value="Очистить" name="clear">
+                <br><br>
+            </form>
+        </div>
+
+        <form action="" method="get">
+            <div class="all_events_box">
+                <div class="info">
+                    <b>Найдены мероприятия в количестве:</b>
+                    {% if len(events.index) == 0 %} ничего не найдено.
+                    {% else %}
+                        {{ len(events.index) }}. <b>Из них актуально:</b> {{ len(events[events['status_name'] == 'Актуально']) }}.
+                    {% endif %}
+                </div>
+                <br>
+
+                {% for i in range(len(events)) %}
+                    {% if participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] == null %}
+                        {% set parti = 1 %}
+                    {% else %}
+                        {% set parti = participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] %}
+                    {% endif %}
+
+                    <div
+                            {% if parti / events['participants'].values[i] * 100 > 30 and parti != events['participants'].values[i] %}
+                                class="container_box_one_event_super"
                             {% else %}
-                                {% set parti = participants_list[participants_list['event_id'] ==
-                    events['event_id'].values[i]]['coun'].values[0] %}
-                                {% if (parti == null or events['participants'].values[i] != parti) and (user_role != "admin") %}
-                                    <form action='' method="get">
-                                        <input type="hidden" name="registration"
-                                               value={{ events['event_id'].values[i] }}>
-                                        <input type="submit" value="Участвовать"
-                                               style="position: absolute; left: 2%;bottom: 2%;background:#fc6c85;  color: #fff0f5;">
-                                    </form>
-                                {% else %}
-                                    <form action='' method="get">
-                                        <input type="submit" disabled value="Участвовать"
-                                               style=" position: absolute; left: 2%;bottom: 2%;color: #fff0f5; background:#ddbec3;">
-                                    </form>
-                                {% endif %}
+                                class="container_box_one_event"
+                            {% endif %}
+                    >
+                        {% if events['status_id'].values[i] == 2 %}
+                            <p>
+                                Внимание! Мероприятие было перенесено на
+                                {{ events['beginning_date'].values[i][8:11] + '.' + events['beginning_date'].values[i][5:7]+ '.' + events['beginning_date'].values[i][0:4] }}!
+                            </p><br>
+                        {% endif %}
+
+                        {% if events['status_id'].values[i] == 3 %}
+                            <p>
+                                Внимание! Мероприятие было отменено!
+                            </p><br>
+                        {% endif %}
+
+                        {% if events['status_id'].values[i] == 4 %}
+                            <p>
+                                Мероприятие завершено.
+                            </p><br>
+                        {% endif %}
+
+                        <br>Название:
+                        <p>{{ events['event_name'].values[i] }}</p>
+                        <br>
+                        <img src="{{events['picture'].values[i]}}" alt="" width="280px" height="auto">
+                        <br>Тип:
+                        <p>{{ events['type_name'].values[i] }}</p>
+                        <br>
+                        <br>Тема:
+                        <p>{{ events['theme_name'].values[i] }}</p>
+                        <br>
+                        <br>Количество участников:
+                        <p>{{ events['participants'].values[i] }}</p>
+                        <br>
+                        <br>Дата:
+                        <p>{{ events['beginning_dat'].values[i] }}</p>
+                        <br>
+                        <br>Время:
+                        <p>{{ events['start_time'].values[i] }}</p>
+                        <br>
+                        <br>Место проведения:
+                        <p>{{ events['location_name'].values[i] }}</p>
+                        <br>
+                        <br>Статус:
+
+                        {% if (events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4) %}
+                            <p>{{ events['status_name'].values[i] }}</p>
+                        {% else %}
+                            {% if events['status_id'].values[i] == 1 %}
+                                <p>{{ events['status_name'].values[i] }}</p>
+                            {% else %}
+                                <p>{{ events['status_name'].values[i] }}</p>
                             {% endif %}
                         {% endif %}
-                        <form action="{{ url_for('event') }}#open_info_event" method="get">
-                            <input type="hidden" name="choice_event" value={{ events['event_id'].values[i] }}>
-                            <input type="submit" value="Подробнее"
-                                   style="position: absolute; right: 2%;bottom: 2%; background:#fc6c85;  color: #fff0f5;">
-                        </form>
+                        <br><br>
+
+                        <div class="buttons">
+                            {% if (events['event_id'].values[i] in user_event_list) and (events['status_id'].values[i] == 1) and (user_role != "admin") %}
+                                <form action='' method="get">
+                                    <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
+                                    <input type="submit" value="Отменить участие">
+                                </form>
+                            {% else %}
+                                {% if ((events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4)) and (user_role != "admin") %}
+                                    <input type="submit" disabled value="Участвовать">
+                                {% else %}
+                                    {% set parti = participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] %}
+                                    {% if (parti == null or events['participants'].values[i] != parti) and (user_role != "admin") %}
+                                        <form action='' method="get">
+                                            <input type="hidden" name="registration" value={{ events['event_id'].values[i] }}>
+                                            <input type="submit" value="Участвовать">
+                                        </form>
+                                    {% else %}
+                                        <form action='' method="get">
+                                            <input type="submit" disabled value="Участвовать">
+                                        </form>
+                                    {% endif %}
+                                {% endif %}
+                            {% endif %}
+
+                            <form action="{{ url_for('event') }}#open_info_event" method="get">
+                                <input type="hidden" name="choice_event" value={{ events['event_id'].values[i] }}>
+                                <input type="submit" value="Подробнее">
+                            </form>
+                        </div>
                     </div>
+                {% endfor %}
+            </div>
+        </form>
+    </div>
 
-                </div>
-            {% endfor %}
-        </div>
-    </form>
-</div>
+    {{ macros.event_info(event_info, participants_list, "event", len) }}
 
-{{ macros.event_info(event_info, participants_list, "event", len) }}
-
-{{ df_users }}
-{# {% if error_info != True and user_login != True %} hidden {% endif %}#}
     <div id="open_user" class="info_about_event">
         <div class="modal_auth-dialog">
             <div class="modal-content">
                 <div class="modal-body">
-{#                    <form {% if  %} action="{{ url_for('event') }}#open_info_event" {% else  %} action="{{ url_for('event') }}#close_info" {% endif %} method="get">#}
-                       <form action="" method="get">
-
+                    <form action="" method="get">
                         <a href="#close_info" title="Close" class="close">×</a>
                         <div class="auth">
-                            Логин: <input type="text" name="login" class="input_auth" {% if error_info == True %} style="background-color: #b3000f; opacity: .4;" {% endif %}>
-                            Пароль: <input type="text" name="password" class="input_auth" {% if error_info == True %} style="background-color: #b3000f; opacity: .4;" {% endif %}>
+                            Логин:
+                            <label>
+                                <input type="text" name="login" class="input_auth" {% if error_info == True %} {% endif %}>
+                            </label>
+                            Пароль:
+                            <label>
+                                <input type="text" name="password" class="input_auth" {% if error_info == True %} {% endif %}>
+                            </label>
                             <div class="btn">
                             <input type="submit" name="type_auth" class="b" value="{{ type_auth }}">
                             <input type="submit" name="reg" class="b" value="{{ reg }}">
-                            <label class="b" style="color: red; text-align: center">{{ text }}</label>
+                            <label class="b">{{ text }}</label>
                             </div>
                         </div>
                     </form>
@@ -240,7 +253,5 @@
             </div>
         </div>
     </div>
-{#{% endif %}#}
-
 </body>
 </html>
