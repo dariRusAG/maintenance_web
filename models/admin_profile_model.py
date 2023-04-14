@@ -85,7 +85,7 @@ def get_users_events(conn):
     return pd.read_sql('''
             SELECT login, rate, event_name, strftime('%d.%m.%Y',beginning_date) as beginning_dat
     FROM user_event
-    LEFT JOIN user USING (user_id)
+    LEFT JOIN users USING (user_id)
     LEFT JOIN event USING (event_id)
     WHERE rate IS NOT NULL AND rate <> :none
     ORDER BY event_name

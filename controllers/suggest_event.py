@@ -5,7 +5,7 @@ from models.suggest_event_model import *
 from utils import get_db_connection
 
 
-@app.route('/suggest_event.htm', methods=['GET', 'POST'])
+@app.route('/suggest_event', methods=['GET', 'POST'])
 def suggest_event():
     conn = get_db_connection()
 

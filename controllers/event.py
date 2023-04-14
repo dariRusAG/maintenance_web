@@ -16,7 +16,10 @@ def event():
     df_users = get_users(conn)
     sort = 0
     text = ''
-
+    if 'type_auth' not in session:
+        session['type_auth'] = []
+    if 'reg' not in session:
+        session['reg'] = []
         # нажата кнопка Найти
     # if request.values.get('status'):
     #     status = int(request.values.get('status'))

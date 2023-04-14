@@ -79,9 +79,9 @@
 Введите описание мероприятия
 <br>
 <textarea name="new_event_description" style="width:100%; height:4vh; resize: none"></textarea>
-    {% if panel == "suggest" %}
 
-    <div class="admin_panel_right_data_text">
+    {% if panel == "suggest" %}
+    <div class="admin_panel_right_data_text" style="margin-top: 15px">
         Контактная почта для связи:
         <input type="text" name="suggest_event_mail" placeholder="" style="height:4%; ">
     </div>
@@ -90,7 +90,7 @@
 {% if panel == "admin" %}
     <input type="submit" name="add_new_event" value="Добавить новое мероприятие" style="margin-top: 6px">
 {% else %}
-    <input type="submit" name="add_suggest_event" value="Добавить новое мероприятие" style="margin-top: 7vh">
+    <input type="submit" name="add_suggest_event" value="Добавить новое мероприятие" style="margin-top: 5vh">
 {% endif %}
 </form>
     <br>
