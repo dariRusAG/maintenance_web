@@ -36,7 +36,7 @@ def to_delete_user(conn, user_id):
 def get_user_id(conn, login):
     try:
         return pd.read_sql('''
-        SELECT users_id 
+        SELECT user_id 
         FROM users
         WHERE login = :login
         ''', conn, params={"login": login}).values[0][0]

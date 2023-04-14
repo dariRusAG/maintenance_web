@@ -12,15 +12,15 @@
             <li class=active><a href="{{ url_for("event") }}">Афиша</a></li>
             <li class=active><a href="{{ url_for("suggest_event") }}">Предложить мероприятие</a></li>
             <form action="{{ url_for('event') }}" method="get">
-                <input type="submit" name="user_logout" value="Выйти">
+                <input type="submit" name="user_logout" value="Выйти" class="btn-log">
             </form>
         </ul>
     </div>
 
-    <div class="sort">
+    <div class="sort_event">
         <form action="{{ url_for('profile') }}" method="post">
             <label>
-                <select name="list">
+                <select name="select-list" class="select-list">
                     <option {% if title == 'None' or title == 'Рекомендуемая сортировка' %} selected {% endif %}>Рекомендуемая сортировка</option>
                     <option {% if title == 'Отсортировать по алфавиту ↓' %} selected {% endif %}>Отсортировать по алфавиту ↓</option>
                     <option {% if title == 'Отсортировать по алфавиту ↑' %} selected {% endif %}>Отсортировать по алфавиту ↑</option>
@@ -30,29 +30,30 @@
                     <option {% if title == 'Отсортировать по статусу ↑' %} selected {% endif %}>Отсортировать по статусу ↑</option>
                 </select>
             </label>
-            <input type="submit" value="Отсортировать">
+            <input type="submit" value="Отсортировать" class="btn sort">
         </form>
     </div>
 
     <div class=box_for_all_profile>
-        {% if len(status_list) != 0 %}
-            <h1>Мероприятия на которые вы зарегистрировались</h1>
-        {% else %}
-            <h1>Вы еще не зарегистрировались ни на одно мероприятие</h1>
-        {% endif %}
-
         <div class="box_for_all_profile_wt_text">
             {% if len(status_list) != 0 %}
-                <div class=add_menu_user>
+                <div class="add_menu">
                     <form action="" method="post">
                         {{ macros.render_table("Статус мероприятия", status_list, session['status_user'], len) }}
-                        <input type="submit" value="Найти" name="search">
-                        <input type="submit" value="Очистить" name="clear">
-                    <br><br>
+                        <input type="submit" value="Найти" name="search" class="btn filter">
+                        <input type="submit" value="Очистить" name="clear" class="btn filter">
                     </form>
                 </div>
-            {% else %}
-                {{ macros.render_event_list(events, "profile", len) }}
+                <form action="" method="get">
+                    <div class="title">
+                        {% if len(status_list) != 0 %}
+                            Мероприятия на которые вы зарегистрировались
+                        {% else %}
+                            Вы еще не зарегистрировались ни на одно мероприятие
+                        {% endif %}
+                    </div>
+                    {{ macros.render_event_list(events, "profile", len) }}
+                </form>
             {% endif %}
         </div>
     </div>
@@ -69,9 +70,11 @@
 
     <div class="rate">
         <form action="" method="get">
-            <p>Оставьте обратную связь и оцените мероприятие</p><br>
+            <div class="title title-2">
+                Оставьте обратную связь и оцените мероприятие
+            </div>
             <label>
-                <select name="rate_box">
+                <select name="rate_box" class="select-list">
                     <option>Всё очень понравилось</option>
                     <option>Всё было хорошо</option>
                     <option>Были недостатки</option>
@@ -80,15 +83,15 @@
             </label>
 
             <label>
-                <textarea name="rate_text" placeholder="Оцените мероприятие..."></textarea>
+                <textarea name="rate_text" class="rate_text" placeholder="Оцените мероприятие..."></textarea>
             </label>
-            <input type="submit" value="Отправить" name="to_rate_event">
+            <input type="submit" value="Отправить" name="to_rate_event" class="btn send">
         </form>
     </div>
     {% endif %}
 
     <form action="{{url_for('event')}}" method="get">
-        <input type="submit" name="remove_profile_button" value="Удалить аккаунт">
+        <input type="submit" name="remove_profile_button" value="Удалить аккаунт" class="btn">
     </form>
 </body>
 </html>

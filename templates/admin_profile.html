@@ -12,12 +12,14 @@
         <ul>
             <li class=active><a href="{{ url_for("event") }}">Афиша</a></li>
             <form action="{{ url_for('event') }}" method="get">
-                <input type="submit" name="user_logout" value="Выйти">
+                <input type="submit" name="user_logout" value="Выйти" class="btn-log">
             </form>
         </ul>
     </div>
 
-    <b>Разделы базы данных</b><br>
+    <div class="title">
+        Разделы базы данных
+    </div>
 
     <div class="admin_panel">
         <div class="admin_panel_left">

@@ -12,11 +12,9 @@
             {% endfor %}
         </select>
     </label>
-    <br><br>
 {% endmacro %}
 
 {% macro render_option_edit(name, choice, list, len) %}
-    <br>
     <select name="{{ name }}">
         {% set n = len(list) %}
         {% for i in range(n) %}
@@ -32,7 +30,6 @@
             {% endif %}
         {% endfor %}
     </select>
-    <br>
 {% endmacro %}
 
 <!--Макрос для вывода добавления мероприятий на панели администратора-->
@@ -43,89 +40,110 @@
         <form action="{{ url_for('suggest_event') }}" method="get">
     {% endif %}
 
+    <p class="left_filter">
         Название
         <label>
             <input type="text" name="new_event_name" placeholder="">
         </label>
-        <br><br>
+    </p>
 
+    <p class="left_filter">
         Тема
         {{ render_option("theme", theme_list, len) }}
+    </p>
 
+    <p class="left_filter">
         Тип
         {{ render_option("type", type_list, len) }}
+    </p>
 
+    <p class="left_filter">
         Организатор
         {{ render_option("organizer", organizer_list, len) }}
+    </p>
 
+    <p class="left_filter">
         Площадка
         {{ render_option("location", location_list, len) }}
+    </p>
 
+    <p class="left_filter">
         Место проведения
         <label>
             <input type="text" name="new_event_venue" placeholder="">
         </label>
-        <br><br>
+    </p>
 
+    <p class="left_filter">
         {% if panel == "admin" %}
             Выберите статус
             {{ render_option("status", status_list, len) }}
         {% endif %}
+    </p>
 
+    <p class="left_filter">
         Введите количество участников
         <label>
             <input type="text" name="new_event_part" placeholder="">
         </label>
-        <br><br>
+    </p>
 
+    <p class="left_filter">
         Дата начала
         <label>
             <input type="text" name="new_event_beginning_date" placeholder="">
         </label>
-        <br><br>
+    </p>
 
+    <p class="left_filter">
         Дата окончания
         <label>
             <input type="text" name="new_event_expiration_date" placeholder="">
         </label>
-        <br><br>
+    </p>
 
+    <p class="left_filter">
         Время начала
         <label>
             <input type="text" name="start_time" placeholder="">
         </label>
+    </p>
 
+    <p class="left_filter">
         Время окончания
         <label>
             <input type="text" name="end_time" placeholder="">
         </label>
-        <br><br>
+    </p>
 
+    <p class="left_filter">
         Афиша или фотография
         <label>
             <input type="text" name="picture" placeholder="">
         </label>
-        <br><br>
+    </p>
 
+    <p class="left_filter">
         Введите описание мероприятия
-        <br>
         <label>
             <textarea name="new_event_description"></textarea>
         </label>
-        {% if panel == "suggest" %}
-            <div class="admin_panel_right_data_text">
-                Контактная почта для связи:
-                <label>
-                    <input type="text" name="suggest_event_mail" placeholder="">
-                </label>
-            </div>
-        {% endif %}
+    </p>
 
-        {% if panel == "admin" %}
-            <input type="submit" name="add_new_event" value="Добавить новое мероприятие">
-        {% else %}
-            <input type="submit" name="add_suggest_event" value="Добавить новое мероприятие">
-        {% endif %}
+    {% if panel == "suggest" %}
+        <div class="admin_panel_right_data_text">
+            Контактная почта для связи:
+            <label>
+                <input type="text" name="suggest_event_mail" placeholder="">
+            </label>
+        </div>
+    {% endif %}
+
+    {% if panel == "admin" %}
+        <input type="submit" name="add_new_event" value="Добавить новое мероприятие" class="btn filter">
+    {% else %}
+        <input type="submit" name="add_suggest_event" value="Добавить новое мероприятие" class="btn filter">
+    {% endif %}
     </form>
 {% endmacro %}
 
@@ -138,19 +156,19 @@
                     <form action="{{ url_for('admin_profile') }}#open_info_event" method="get">
                         {{ all_events.loc[i, 'event_name'] }}
                         <input type="hidden" name="choice_event" value={{ all_events['event_id'].values[i] }}>
-                        <input type="submit" value="Подробнее">
+                        <input type="submit" value="Подробнее" class="btn sort edit">
                     </form>
 
                     <form action="" method="get">
-                        <input type="submit" value="Изменить">
+                        <input type="submit" value="Изменить" class="btn sort edit">
                         <input type="hidden" name="is_edit_event" value={{ all_events['event_id'].values[i] }}>
                     </form>
 
                     <form action="" method="get">
-                        <input type="submit" value="Удалить">
+                        <input type="submit" value="Удалить" class="btn sort edit">
                         <input type="hidden" name="delete_event" value={{ all_events['event_id'].values[i] }}>
                     </form>
-                </div><br>
+                </div>
             {% endfor %}
         {% else %}
             <form action="" method="get">
@@ -184,9 +202,9 @@
                         <input type="text" name="edit_event_beginning_dat" value="{{ one_event_info['beginning_dat'].values[0] }}">
                     </label>
                     Дата окончания:
-                    <input type="text" name="edit_event_expiration_dat"
-                           value="{{ one_event_info['expiration_dat'].values[0] }}"
-                           style="width: 15vw; margin-left: 5px">
+                    <label>
+                        <input type="text" name="edit_event_expiration_dat" value="{{ one_event_info['expiration_dat'].values[0] }}">
+                    </label>
                 </div>
 
                 <div class="admin_panel_right_data_text">
@@ -213,7 +231,9 @@
 
                 <div class="admin_panel_right_data_text">
                     Место проведения:
-                    <input type="text" name="edit_event_venue" value="{{ one_event_info['venue_name'].values[0] }}">
+                    <label>
+                        <input type="text" name="edit_event_venue" value="{{ one_event_info['venue_name'].values[0] }}">
+                    </label>
                 </div>
 
                 <div class="admin_panel_right_data_text">
@@ -223,18 +243,20 @@
 
                 <div class="admin_panel_right_data_text">
                     Афиша или фотография:
-                    <input type="text" name="edit_event_picture" value="{{ one_event_info['picture'].values[0] }}">
+                    <label>
+                        <input type="text" name="edit_event_picture" value="{{ one_event_info['picture'].values[0] }}">
+                    </label>
                 </div>
 
                 <div class="admin_panel_right_data_text">
                     Описание:
+                    <label>
+                        <textarea name="edit_event_description"
+                                  value="{{ one_event_info['description'].values[0] }}">{{ one_event_info['description'].values[0] }}</textarea>
+                    </label>
                 </div>
 
-                <label>
-                    <textarea name="edit_event_description" value="{{ one_event_info['description'].values[0] }}">{{ one_event_info['description'].values[0] }}</textarea>
-                </label>
-
-                <input type="submit" name="edit_event" value="Отредактировать мероприятие">
+                <input type="submit" name="edit_event" value="Отредактировать мероприятие" class="btn sort">
             </form>
         {% endif %}
     </div>
@@ -242,19 +264,16 @@
 
 <!--Макрос для вывода оценок на панели администратора-->
 {% macro admin_panel_rate(user_rate, len) %}
-    Оценки мероприятий<br>
+    Оценки мероприятий
     <div class="rate_big_box">
         {% for i in range(len(user_rate)) %}
             <div class="rate_small_box">
                 <cool_text>Логин:</cool_text>
                 {{ user_rate.iloc[i, 0] }}
-                <br>
                 <cool_text>Мероприятие:</cool_text>
                 {{ user_rate.iloc[i, 2] }}
-                <br>
                 <cool_text>Дата мероприятия:</cool_text>
                 {{ user_rate.iloc[i, 3] }}
-                <br>
                 {{ user_rate.iloc[i, 1] }}
             </div>
         {% endfor %}
@@ -265,29 +284,34 @@
 {% macro admin_panel_new(events, len) %}
     Предложенные мероприятия
     <form action="" method="get">
-        <div class="all_events_box_suggest"><br>
+        <div class="all_events_box_suggest">
             {% for i in range(len(events)) %}
                 <div class="container_box_one_event">
-                    <br>Название:
-                    <p>{{ events['event_name'].values[i] }}</p>
+                    <p>
+                        Название:
+                        {{ events['event_name'].values[i] }}
+                    </p>
 
-                    <br>Контактная почта:
-                    <p>{{ events['mail'].values[i] }}</p><br>
+                    <p>
+                        Контактная почта:
+                        {{ events['mail'].values[i] }}
+                    </p>
+
                     <img src="{{ events['picture'].values[i] }}" alt="" width="280px" height="auto">
 
                     <form action="" method="get">
-                        <input type="submit" value="Принять">
+                        <input type="submit" value="Принять" class="btn sort">
                         <input type="hidden" name="add_suggest_event" value={{ events['event_id'].values[i] }}>
                     </form>
 
                     <form action="" method="get">
-                        <input type="submit" value="Отклонить">
+                        <input type="submit" value="Отклонить" class="btn sort">
                         <input type="hidden" name="delete_suggest_event" value={{ events['event_id'].values[i] }}>
                     </form>
 
                     <form action="{{ url_for('admin_profile') }}#open_info_event" method="get">
                         <input type="hidden" name="choice_event_suggest" value={{ events['event_id'].values[i] }}>
-                        <input type="submit" value="Подробнее">
+                        <input type="submit" value="Подробнее" class="btn sort">
                     </form>
                 </div>
             {% endfor %}
@@ -297,106 +321,129 @@
 
 {% macro render_table(table_name, relation,choice_list,len) %}
     <fieldset>
-        <legend>
-            <strong>
-                {{ table_name }}
-            </strong>
-        </legend>
-
+        <legend><strong>{{ table_name }}</strong></legend>
         {% for i in range(len(relation)) %}
-            <label>
-                {% set value=relation.iloc[i, 0] %}
-                <input type="checkbox" name="{{ table_name }}" value="{{ value }}"
-                        {% if value in choice_list %} checked {% endif %}>
-            </label>
-            {{ value }} ({{ relation.iloc[i, 1] }})<br>
+            <p class="left_filter">
+                <label>
+                    {% set value=relation.iloc[i, 0] %}
+                    <input type="checkbox" name="{{ table_name }}" value="{{ value }}"
+                            {% if value in choice_list %} checked {% endif %}>
+                </label>
+                {{ value }} ({{ relation.iloc[i, 1] }})
+            </p>
         {% endfor %}
     </fieldset>
 {% endmacro %}
 
 {% macro render_event_list(events, name, len) %}
-    <form action="" method="get">
         <div class="all_events_box">
-            <br>
             {% for i in range(len(events)) %}
              <div class="container_box_one_event">
+
+{#                 <div#}
+{#                            {% if parti / events['participants'].values[i] * 100 > 30 and parti != events['participants'].values[i] %}#}
+{#                                class="container_box_one_event_super"#}
+{#                            {% else %}#}
+{#                                class="container_box_one_event"#}
+{#                            {% endif %}#}
+{#                    >#}
+
                 {% if events['status_id'].values[i] == 2 %}
-                    <p>
+                    <div class="warning">
                         Внимание! Мероприятие было перенесено на {{ events['beginning_date'].values[i] }}!
-                    </p><br>
+                    </div>
                 {% endif %}
 
                 {% if events['status_id'].values[i] == 3 %}
-                    <p>
+                    <div class="warning">
                         Внимание! Мероприятие было отменено!
-                    </p><br>
+                    </div>
                 {% endif %}
 
                 {% if events['status_id'].values[i] == 4 %}
-                    <p>
+                    <div class="warning">
                         Мероприятие завершено.
-                    </p><br>
+                    </div>
                 {% endif %}
 
-                <br>Название:
-                <p>{{ events['event_name'].values[i] }}</p><br>
-                <img src="{{ events['picture'].values[i] }}" alt="" width="280px" height="auto">
+                <p class="event-title">
+                    {{ events['event_name'].values[i] }}
+                </p>
 
-                <br>Тип:
-                <p>{{ events['type_name'].values[i] }}</p><br>
+                <p>
+                    <img src="{{ events['picture'].values[i] }}" alt="" width="280px" height="auto">
+                </p>
 
-                <br>Тема:
-                <p>{{ events['theme_name'].values[i] }}</p><br>
+                <p class="event-caption">
+                    {{ events['type_name'].values[i] }}
+                </p>
 
-                <br>Количество участников:
-                <p>{{ events['participants'].values[i] }}</p><br>
+                <p>
+                    Тема:
+                    {{ events['theme_name'].values[i] }}
+                </p>
 
-                <br>Дата:
-                <p>{{ events['beginning_date'].values[i] }}</p><br>
+                <p>
+                    Количество участников:
+                    {{ events['participants'].values[i] }}
+                </p>
 
-                <br>Время:
-                <p>{{ events['start_time'].values[i] }}</p><br>
+                <p>
+                    Дата:
+                    {{ events['beginning_date'].values[i] }}
+                </p>
 
-                <br>Место проведения:
-                <p>{{ events['location_name'].values[i] }}</p><br>
+                <p>
+                    Время:
+                    {{ events['start_time'].values[i] }}
+                </p>
 
-                <br>Статус:
-                {% if (events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4) %}
-                    <p>{{ events['status_name'].values[i] }}</p>
-                {% else %}
-                    {% if events['status_id'].values[i] == 1 %}
-                        <p>{{ events['status_name'].values[i] }}</p>
+                <p>
+                    Место проведения:
+                    {{ events['location_name'].values[i] }}
+                </p>
+
+                <div class="relevance">
+                    {% if (events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4) %}
+                        {{ events['status_name'].values[i] }}
                     {% else %}
-                        <p>{{ events['status_name'].values[i] }}</p>
+                        {% if events['status_id'].values[i] == 1 %}
+                            <div class="relevance_green">
+                                {{ events['status_name'].values[i] }}
+                            </div>
+                        {% else %}
+                            <div class="relevance_yellow">
+                                {{ events['status_name'].values[i] }}
+                            </div>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-                <br><br>
+                </div>
 
                 {% if (events['status_id'].values[i] == 1) or (events['status_id'].values[i] == 2) %}
                     <div class="buttons">
                     <form action="" method="get">
                         <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
-                        <input type="submit" value="Отменить участие">
+                        <input type="submit" value="Отменить участие" class="btn sort">
                     </form>
                 {% else %}
                     {% if (events['status_id'].values[i] == 3) %}
                         <div class="buttons">
                         <form action="" method="get">
                             <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
-                            <input type="submit" value="Удалить из списка">
+                            <input type="submit" value="Удалить из списка" class="btn sort">
                         </form>
                     {% else %}
                         <div class="buttons">
-                        <form action="" method="get">
-                            <input type="hidden" name="to_rate" value={{ events['event_id'].values[i] }}>
-                            <input type="submit" value="Оценить мероприятие">
-                        </form>
+                            <form action="" method="get">
+                                <input type="hidden" name="to_rate" value={{ events['event_id'].values[i] }}>
+                                <input type="submit" value="Оценить" class="btn sort">
+                            </form>
                     {% endif %}
                 {% endif %}
 
                 <form action="{{ url_for(name) }}#open_info_event" method="get">
                     <input type="hidden" name="choice_event" value={{ events['event_id'].values[i] }}>
-                    <input type="submit" value="Подробнее">
+                    <input type="submit" value="Подробнее" class="btn sort">
                 </form>
                         </div>
                         </div>
@@ -404,7 +451,6 @@
             </div>
             </div>
         </div>
-    </form>
 {% endmacro %}
 
 
@@ -415,23 +461,37 @@
                 <a href="#close_info" title="Close" class="close">×</a>
                 <form action="{{ url_for(name) }}#close_info" method="get">
                     <div class="modal-body">
-                        <br>Название:
-                        <p>{{ event_info['event_name'].values[0] }}</p><br>
-                        <img src="{{ event_info['picture'].values[0] }}" alt="" width="520px" height="auto"><br>
+                        <p class="event-title info_event">
+                            {{ event_info['event_name'].values[0] }}
+                        </p>
 
-                        <br>Тип:
-                        <p>{{ event_info['type_name'].values[0] }}</p><br>
+                        <p>
+                            <img src="{{ event_info['picture'].values[0] }}" alt="" width="520px" height="auto">
+                        </p>
 
-                        <br>Тема:
-                        <p>{{ event_info['theme_name'].values[0] }}</p><br>
+                        <p class="event-caption">
+                            {{ event_info['type_name'].values[0] }}
+                        </p>
 
-                        <br>Организатор:
-                        <p>{{ event_info['organizer_name'].values[0] }}</p><br>
+                        <p>
+                            Тема:
+                            {{ event_info['theme_name'].values[0] }}
+                        </p>
 
-                        <br>Количество участников:
-                        <p>{{ event_info['participants'].values[0] }}</p><br>
+                        <p>
+                            Организатор:
+                            {{ event_info['organizer_name'].values[0] }}
+                        </p>
 
-                        <br>Количество зарегистрировавшихся на мероприятие:
+                        <p>
+                            Количество участников:
+                            {{ event_info['participants'].values[0] }}
+                        </p>
+
+                        <p>
+                            Количество зарегистрировавшихся на мероприятие:
+{#                            {{ participants_list[participants_list['event_id'] == event_info['event_id'].values[0]]['coun'].values[0] }}#}
+                        </p>
 
                         {#                           {% if len(participants_list[participants_list['event_id'] == event_info['event_id'].values[0]]['coun']) != 0 %}#}
                         {#                                <p4>#}
@@ -441,33 +501,40 @@
                         {#                                0#}
                         {#                            {% endif %}#}
 
-                        <br>
+                        <p>
+                            {% if event_info['beginning_dat'].values[0] == event_info['expiration_dat'].values[0] %}
+                                Дата мероприятия:
+                                {{ event_info['beginning_dat'].values[0] }}
+                            {% else %}
+                                Дата мероприятия:
+                                {{ event_info['beginning_dat'].values[0] }} -
+                                {{ event_info['expiration_dat'].values[0] }}
+                            {% endif %}
+                        </p>
 
-                        {% if event_info['beginning_dat'].values[0] == event_info['expiration_dat'].values[0] %}
-                            <br>Дата мероприятия:
-                            <p>{{ event_info['beginning_dat'].values[0] }}</p>
-                        {% else %}
-                            Дата мероприятия:
-                            <p> {{ event_info['beginning_dat'].values[0] }} - {{ event_info['expiration_dat'].values[0] }}</p>
-                        {% endif %}<br>
+                        <p>
+                            Время:
+                            {{ event_info['start_time'].values[0] }} - {{ event_info['end_time'].values[0] }}
+                        </p>
 
-                        <br>Время:
-                        <p>{{ event_info['start_time'].values[0] }} - {{ event_info['end_time'].values[0] }}</p>
-                        <br>
+                        <p>
+                            Площадка:
+                            {{ event_info['location_name'].values[0] }}
+                        </p>
 
-                        <br>Площадка:
-                        <p>{{ event_info['location_name'].values[0] }}</p>
-                        <br>
+                        <p>
+                            Место проведения:
+                            {{ event_info['venue_name'].values[0] }}
+                        </p>
 
-                        <br>Место проведения:
-                        <p>{{ event_info['venue_name'].values[0] }}</p>
-                        <br>
+                        <p>
+                            Статус:
+                            {{ event_info['status_name'].values[0] }}
+                        </p>
 
-                        <br>Статус:
-                        <p>{{ event_info['status_name'].values[0] }}</p><br><br>
-
-                        <br>Описание:<br>
-                        <p>{{ event_info['description'].values[0] }}</p><br>
+                        <p class="description">
+                            {{ event_info['description'].values[0] }}
+                        </p>
                     </div>
                 </form>
             </div>
