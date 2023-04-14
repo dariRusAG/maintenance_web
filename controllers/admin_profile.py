@@ -20,12 +20,15 @@ def admin_profile():
     detailed_info = False
     checked_value = False
 
+    # Начальная инициализация session
     if 'event_id' not in session:
         session['event_id'] = 0
 
+    # Просмотр интерфейса каждой функции из панели администратора
     if request.values.get('panel'):
         admin_panel_button = request.values.get('panel').title()
 
+    # Добавление нового мероприятия
     if request.values.get('add_new_event'):
         location_name = df_location.loc[int(request.values.get('location')) - 1][0]
         venue_name = str(request.values.get('new_event_venue'))
@@ -47,36 +50,41 @@ def admin_profile():
 
         admin_panel_button = "Добавление"
 
+    # Удаление мероприятия
     elif request.values.get('delete_event'):
         session['event_id'] = int(request.values.get('delete_event'))
         admin_panel_button = "Редактирование"
         delete_event(conn, session['event_id'])
 
-    # нажата кнопка подробнее
+    # Просмотр подробной информации о мероприятии
     elif request.values.get('choice_event'):
         session['event_id'] = int(request.values.get('choice_event'))
         admin_panel_button = "Редактирование"
 
+    # Просмотр предложенных мероприятий
     elif request.values.get('choice_event_suggest'):
         session['event_id'] = int(request.values.get('choice_event_suggest'))
         admin_panel_button = "Предложения"
 
+    # Добавление предложенного мероприятия
     elif request.values.get('add_suggest_event'):
         session['event_id'] = int(request.values.get('add_suggest_event'))
         admin_panel_button = "Предложения"
         update_suggest_event(conn, session['event_id'])
 
+    # Удаление предложенного мероприятия
     elif request.values.get('delete_suggest_event'):
         session['event_id'] = int(request.values.get('delete_suggest_event'))
         admin_panel_button = "Предложения"
         delete_event(conn, session['event_id'])
 
-    # нажата кнопка редактирования мероприятия
+    # Редактирование мероприятия
     elif request.values.get('is_edit_event'):
         checked_value = True
         session['event_id'] = request.values.get('is_edit_event')
         admin_panel_button = "Редактирование"
 
+    # Редактирование полей мероприятия
     elif request.values.get('edit_event'):
         admin_panel_button = "Редактирование"
         location_name = df_location.loc[int(request.values.get('edit_location')) - 1][0]

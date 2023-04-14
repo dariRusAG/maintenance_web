@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, request, session
 from utils import get_db_connection
 from models.profile_model import *
-from models.event_model import get_event_info,get_participants
+from models.event_model import get_event_info, get_participants
 
 
 @app.route('/profile', methods=['GET', 'POST'])
@@ -32,11 +32,11 @@ def profile():
     elif request.values.get('choice_event'):
         event_id = int(request.values.get('choice_event'))
 
-    # Отправить отзыв о мероприятии
+    # Отправка отзыва о мероприятии
     if request.values.get('to_rate_event'):
         rate_box = request.values.get('rate_box')
         rate_text = request.values.get('rate_text')
-        rate = "Оценка: " + rate_box+" Комментарий: " + rate_text
+        rate = "Оценка: " + rate_box + " Комментарий: " + rate_text
         if 'remember_id_' in session:
             to_rate(conn, session['remember_id_'], rate, session['user_id'])
             session.pop('remember_id_', None)
