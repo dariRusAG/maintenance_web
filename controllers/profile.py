@@ -4,6 +4,7 @@ from utils import get_db_connection
 from models.profile_model import *
 from models.event_model import get_event_info,get_participants
 
+
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     conn = get_db_connection()
@@ -25,7 +26,6 @@ def profile():
         # нажата кнопка подробнее
     elif request.values.get('choice_event'):
         event_id = int(request.values.get('choice_event'))
-
 
     if request.values.get('to_rate_event'):
         rate_box = request.values.get('rate_box')

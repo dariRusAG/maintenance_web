@@ -1,12 +1,44 @@
 import pandas as pd
 
+
 def is_correct_login_and_password(conn, login, password):
     try:
         return pd.read_sql('''
         SELECT user_role
-        FROM user
+        FROM users
         WHERE login = :login AND password = :password;
         ''', conn, params={"login": login, "password": password}).values[0][0]
+
+    except IndexError:
+        return "error"
+
+
+def add_user(conn, log, passw):
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO users(login, password, user_role) 
+        VALUES (:login, :password, "user")
+         ''', {"login": log, "password": passw})
+    conn.commit()
+    return cur.lastrowid
+
+
+def to_delete_user(conn, user_id):
+    cur = conn.cursor()
+    cur.execute('''
+    DELETE FROM users
+    WHERE user_id = :user_id;
+     ''', {"user_id": user_id})
+    conn.commit()
+    return cur.lastrowid
+
+
+def get_user_id(conn, login):
+    try:
+        return pd.read_sql('''SELECT users_id 
+        FROM users
+        WHERE login = :login
+        ''', conn, params={"login": login}).values[0][0]
 
     except IndexError:
         return "error"
@@ -21,6 +53,7 @@ LEFT JOIN event USING (theme_id)
 GROUP BY theme_name
 ''', conn)
 
+
 def get_type(conn):
     return pd.read_sql('''
         SELECT
@@ -30,6 +63,7 @@ FROM type
 LEFT JOIN event USING (type_id)
 GROUP BY type_name
 ''', conn)
+
 
 def get_organizer(conn):
     return pd.read_sql('''
@@ -41,6 +75,7 @@ LEFT JOIN event USING (organizer_id)
 GROUP BY organizer_name
 ''', conn)
 
+
 def get_location(conn):
     return pd.read_sql('''
         SELECT
@@ -51,6 +86,7 @@ LEFT JOIN event USING (location_id)
 GROUP BY location_name
 ''', conn)
 
+
 def get_status(conn):
     return pd.read_sql('''
         SELECT
@@ -60,6 +96,7 @@ FROM status
 LEFT JOIN event USING (status_id)
 GROUP BY status_name
 ''', conn)
+
 
 def get_event(conn):
     return pd.read_sql(f'''SELECT event_name,theme_name,type_name,participants, 
@@ -76,6 +113,7 @@ def get_event(conn):
     ORDER BY status_id,strftime('%Y-%m-%d',beginning_date) DESC, event_name
     ''', conn)
 
+
 def get_event_sort(conn, sort):
     return pd.read_sql(f'''SELECT event_name,theme_name,type_name,participants, 
     strftime('%d.%m.%Y',beginning_date) as beginning_dat,strftime('%d.%m.%Y',expiration_date) as expiration_dat,
@@ -90,7 +128,8 @@ def get_event_sort(conn, sort):
     ORDER BY {sort}
     ''', conn)
 
-def get_event_info(conn,id):
+
+def get_event_info(conn, id):
     return pd.read_sql(f'''SELECT event_name,theme_name,type_name,participants, 
     strftime('%d.%m.%Y',beginning_date) as beginning_dat,strftime('%d.%m.%Y',expiration_date) as expiration_dat,
     start_time,end_time,organizer_name,location_name,venue_name, description, status_name,status_id, picture, event_id
@@ -104,41 +143,47 @@ def get_event_info(conn,id):
     WHERE event_id = {id}
     ''', conn)
 
+
 def get_users(conn):
-    return pd.read_sql(f'''SELECT * FROM user
+    return pd.read_sql(f'''SELECT * FROM users
     ''', conn)
+
 
 def get_user_id(conn, login):
     try:
         return pd.read_sql('''SELECT user_id 
-        FROM user
+        FROM users
         WHERE login = :login
         ''', conn, params={"login": login}).values[0][0]
     except IndexError:
         return "error"
 
-def to_registrate(conn,user_id,event_id):
+
+def to_registrate(conn, user_id, event_id):
     cur = conn.cursor()
     cur.execute(f'''
     INSERT OR IGNORE INTO user_event(user_id,event_id) VALUES (:user_id,:event_id)
-     ''', {"user_id": user_id,"event_id": event_id})
+     ''', {"user_id": user_id, "event_id": event_id})
     conn.commit()
     return cur.lastrowid
 
-def to_cancel(conn,user_id,event_id):
+
+def to_cancel(conn, user_id, event_id):
     cur = conn.cursor()
     cur.execute(f'''
     DELETE FROM user_event
     WHERE user_id=:user_id AND event_id=:event_id;
-     ''', {"user_id": user_id,"event_id": event_id})
+     ''', {"user_id": user_id, "event_id": event_id})
     conn.commit()
     return cur.lastrowid
 
-def get_user_events_only_id(conn,id):
+
+def get_user_events_only_id(conn, id):
     return pd.read_sql(f'''SELECT event_id
     FROM user_event
     WHERE user_id = {id}
     ''', conn)
+
 
 def get_participants(conn):
     return pd.read_sql(f'''SELECT event_id, COUNT(user_id) as coun
@@ -146,19 +191,19 @@ def get_participants(conn):
     GROUP BY event_id
     ''', conn)
 
-def is_correct_password(conn,login):
-    return pd.read_sql('''SELECT password
-    FROM user
-    WHERE login = :login;
-    ''', conn,params={"login":login}).values[0][0]
 
-def is_was_registarte_to_event(conn,user_id,event_id):
+def is_correct_password(conn, login):
+    return pd.read_sql('''SELECT password
+    FROM users
+    WHERE login = :login;
+    ''', conn, params={"login": login}).values[0][0]
+
+
+def is_was_registarte_to_event(conn, user_id, event_id):
     return pd.read_sql('''SELECT user_id
     FROM user_event
     WHERE user_id = :user_id AND event_id = :event_id;
-    ''', conn,params={"user_id":user_id,"event_id":event_id})
-
-
+    ''', conn, params={"user_id": user_id, "event_id": event_id})
 
 # def get_filters_event(conn, themes,types,organizers,locations,statuses):
 #     return pd.read_sql(f'''

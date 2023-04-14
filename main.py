@@ -6,8 +6,7 @@ con = sqlite3.connect("event_db.sqlite")
 
 
 con.executescript('''
-
-CREATE TABLE IF NOT EXISTS user(
+CREATE TABLE IF NOT EXISTS users(
 user_id INTEGER PRIMARY KEY AUTOINCREMENT,
 login VARCHAR(30),
 password VARCHAR(30),
@@ -111,7 +110,7 @@ VALUES
 ('Иностранные языки'),
 ('Разное');
 
-INSERT INTO user (login,password, user_role)
+INSERT INTO users (login,password, user_role)
 VALUES
 ('nakao.pd','1234567', 'admin'),
 ('agapova.dr','qwerty', 'admin'),
@@ -236,43 +235,43 @@ VALUES
 ''')
 
 
-df = pd.read_sql('''
-SELECT * FROM venue;
-''',con)
-print(df)
-df = pd.read_sql('''
-SELECT * FROM user;
-''',con)
-print(df)
-df = pd.read_sql('''
-SELECT * FROM theme;
-''',con)
-print(df)
-df = pd.read_sql('''
-SELECT * FROM type;
-''',con)
-print(df)
-df = pd.read_sql('''
-SELECT * FROM organizer;
-''',con)
-print(df)
-df = pd.read_sql('''
-SELECT * FROM location;
-''',con)
-print(df)
-df = pd.read_sql('''
-SELECT * FROM status;
-''',con)
-print(df)
-df = pd.read_sql('''
-SELECT * FROM event;
-''',con)
-print(df)
-
-df = pd.read_sql('''
-SELECT * FROM user_event;
-''',con)
-print(df)
+# df = pd.read_sql('''
+# SELECT * FROM venue;
+# ''',con)
+# print(df)
+# df = pd.read_sql('''
+# SELECT * FROM user;
+# ''',con)
+# print(df)
+# df = pd.read_sql('''
+# SELECT * FROM theme;
+# ''',con)
+# print(df)
+# df = pd.read_sql('''
+# SELECT * FROM type;
+# ''',con)
+# print(df)
+# df = pd.read_sql('''
+# SELECT * FROM organizer;
+# ''',con)
+# print(df)
+# df = pd.read_sql('''
+# SELECT * FROM location;
+# ''',con)
+# print(df)
+# df = pd.read_sql('''
+# SELECT * FROM status;
+# ''',con)
+# print(df)
+# df = pd.read_sql('''
+# SELECT * FROM event;
+# ''',con)
+# print(df)
+#
+# df = pd.read_sql('''
+# SELECT * FROM user_event;
+# ''',con)
+# print(df)
 # login = "user"
 # df = pd.read_sql(f'''
 # SELECT *

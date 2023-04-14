@@ -2,7 +2,6 @@
 body {
     background-color: #ffd1d9;
 }
-
 /* бокс для всего контента под меню */
 .box_for_all {
     background-color: #f1f1f1;
@@ -26,12 +25,10 @@ body {
     display: inline-block;
     vertical-align: top;
     padding: 12px;
-
 }
 
 .menu a {
     text-decoration: none; /* Убирает подчеркивание для ссылок */
-
 }
 
 .menu li:hover {
@@ -43,7 +40,7 @@ body {
 .menu ul {
     display: flex;
     justify-content: space-between;
-    padding: 0px;
+    padding: 0;
 }
 
 .active {
@@ -126,48 +123,18 @@ p3 {
     justify-content: space-between;
 }
 
-/*.info_about_event_gray{*/
-/*background: gray;*/
-/*top:0;*/
-/*left:0;*/
-/*position:fixed;*/
-/*width:100%;*/
-/*height:100%;*/
-/*display: flex;*/
-/*justify-content: center;*/
-/*align-items:center;*/
-
-/*opacity: 0.95;*/
-/*}*/
-
 .info_about_event {
     position: fixed; /* фиксированное положение */
     top: 0;
     right: 0;
     bottom: 0;
     left: 0;
-    /*background: rgb(253, 221, 230); !* цвет фона *!*/
-    background: rgba(0, 0, 0, 0.5); /* цвет фона */
+    background: rgba(0,0,0,0.5); /* цвет фона */
     z-index: 1050;
     opacity: 0; /* по умолчанию модальное окно прозрачно */
-    transition: opacity 200ms ease-in; /* анимация перехода */
     pointer-events: none; /* элемент видим для событий мыши */
     margin: 0;
     padding: 0;
-
-    /*margin-left:30%;*/
-    /*margin-top:2%;*/
-    /*width:40%;*/
-    /*height:auto;*/
-    /*outline: 3px solid #fc6c85;*/
-    /*font-size: 15px;
-    */
-    /*padding: 7px;*/
-    /*border: none;*/
-    /*text-align: left;*/
-    /*border-top: 3px solid #fff;*/
-    /*border-bottom: 3px solid #fc6c85;*/
-
 }
 
 .info_about_event:target {
@@ -183,11 +150,16 @@ p3 {
     margin: 10px;
 }
 
-@media (min-width: 576px) {
-    .modal-dialog {
-        max-width: 580px;
-        margin: 30px auto; /* для отображения модального окна по центру */
-    }
+@media (min-width: 550px) {
+  .modal-dialog {
+      max-width: 580px;
+      margin: 30px auto; /* для отображения модального окна по центру */
+  }
+
+  .modal_auth-dialog {
+      max-width: 350px;
+      margin: 30px auto; /* для отображения модального окна по центру */
+  }
 }
 
 /* свойства для блока, содержащего контент модального окна */
@@ -198,50 +170,15 @@ p3 {
     background-color: #ffd1d9;
     background-clip: padding-box;
     border: 1px solid rgb(252, 108, 133);
-    /*border-radius: .3rem;*/
-    /*outline: 0;*/
+    border-radius: .3rem;
     outline: 3px solid #fc6c85;
 }
 
 @media (min-width: 768px) {
-    .modal-content {
-        box-shadow: 0 5px 15px rgba(0, 0, 0, .5);
-    }
+  .modal-content {
+      box-shadow: 0 5px 15px rgba(0,0,0,.5);
+  }
 }
-
-/*.info_about_event_gray {*/
-/*    background: gray;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    position: fixed;*/
-/*    width: 100%;*/
-/*    height: 100%;*/
-/*    display: flex;*/
-/*    justify-content: center;*/
-/*    align-items: center;*/
-/*    opacity: 0.95;*/
-/*}*/
-
-/*.info_about_event {*/
-/*    opacity: 1;*/
-/*    background: #fddde6;*/
-/*    top: 0;*/
-/*    left: 0;*/
-/*    position: fixed;*/
-/*    margin-left: 30%;*/
-/*    margin-top: 2%;*/
-/*    width: 40%;*/
-/*    height: auto;*/
-
-/*    outline: 3px solid #fc6c85;*/
-/*    font-size: 15px;*/
-/*    padding: 7px;*/
-/*    border: none;*/
-/*    text-align: left;*/
-/*    font-size: 15px;*/
-/*    border-top: 3px solid #fff;*/
-/*    border-bottom: 3px solid #fc6c85;*/
-/*}*/
 
 /* свойства для кнопки "Закрыть" */
 .close {
@@ -282,7 +219,7 @@ p4 {
     background: yellow;
     top: 0;
     left: 0;
-    margin-left: 68.7%;
+    margin-left: 68%;
     margin-top: 2.5%;
     position: fixed;
     opacity: 0;
@@ -290,28 +227,27 @@ p4 {
 }
 
 .auth {
-    opacity: 1;
-    background: #fddde6;
-    top: 0;
-    left: 0;
-    position: fixed;
-    margin-left: 37%;
-    margin-top: 2%;
-    width: 30%;
-    height: 50%;
-    outline: 3px solid #fc6c85;
-    font-size: 15px;
-    padding: 7px;
-    border: none;
-    text-align: left;
-    border-top: 3px solid #fff;
-    border-bottom: 3px solid #fc6c85;
-
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    flex-direction: column;
     flex-wrap: wrap;
+    display: flex;
+    padding: 25px 50px;
+}
+
+.btn {
+    width: 100%;
+    /*margin: 10px 0;*/
+    display: flex;
+    flex-direction: column;
+}
+
+.b {
+    width: 100%;
+    margin: 5px 0;
+}
+
+.input_auth {
+    width: 100%;
+    height: 18px;
+    margin: 10px 0;
 }
 
 .cl-btn-7 {
@@ -559,7 +495,7 @@ p4 {
 }
 
 .edit_small_box {
-    display: flex;
+        display: flex;
     flex-direction: row;
     width: 80%;
     word-wrap: break-word;

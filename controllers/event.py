@@ -3,6 +3,7 @@ from flask import render_template, request, session, make_response
 from utils import get_db_connection
 from models.event_model import *
 
+
 @app.route('/', methods=['GET', 'POST'])
 def event():
     conn = get_db_connection()
@@ -14,6 +15,7 @@ def event():
     event_id = 1
     df_users = get_users(conn)
     sort = 0
+    text = ''
 
         # нажата кнопка Найти
     # if request.values.get('status'):
@@ -54,11 +56,22 @@ def event():
         # нажата кнопка войти
     elif request.values.get('user_login'):
         user_login = True
+        session['type_auth'] = 'Войти'
+        session['reg'] = 'Еще нет аккаунта?'
+        # session['type_auth'] = request.values.get('type_auth')
+        # session['reg'] = request.values.get('reg')
 
-    elif request.values.get('login'):
+    if request.values.get('reg'):
+        if session['type_auth'] == 'Войти':
+            session['type_auth'] = 'Зарегистрироваться'
+            session['reg'] = 'Уже есть аккаунт?'
+        elif session['type_auth'] == 'Зарегистрироваться':
+            session['type_auth'] = 'Войти'
+            session['reg'] = 'Еще нет аккаунта?'
+
+    if request.values.get('type_auth') == 'Войти':
         login = request.values.get('login')
         password = request.values.get('password')
-        print(login)
         match is_correct_login_and_password(conn, login, password):
             case "user":
                 session['user_id'] = f'{get_user_id(conn, login)}'
@@ -73,7 +86,22 @@ def event():
             case "error":
                 error_info = True
                 user_login = True
+                text = "Неверно введен логин или пароль"
 
+    elif request.values.get('type_auth') == 'Зарегистрироваться':
+        login = request.values.get('login')
+        password = request.values.get('password')
+        if get_user_id(conn, login) == "error":
+            add_user(conn, login, password)
+            # session['user_id'] = f'{get_user_id(conn, login)}'
+            # session['user_role'] = "user"
+            text = "Регистрация прошла успешно"
+        else:
+            text = "Пользователь с таким логином уже существует"
+
+    if request.values.get('remove_profile_button'):
+        to_delete_user(conn, session['user_id'])
+        session.pop('user_id', None)
 
     # нажата кнопка Очистить
     if request.form.get('clear'):
@@ -202,7 +230,11 @@ def event():
         participants_list=df_participants,
         user_role=session['user_role'],
         len=len,
-        title=title
+        title=title,
+        type_auth=session['type_auth'],
+        reg=session['reg'],
+        df_users=df_users,
+        text=text
     )
 
     return html
