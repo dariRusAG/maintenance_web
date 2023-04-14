@@ -225,7 +225,15 @@
         <div class="all_events_box">
             <br>
             {% for i in range(len(events)) %}
-                <div class="container_box_one_event">
+{#                {% set parti = participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] %}#}
+                <div
+{#                        {% if parti / events['participants'].values[i] * 100 > 30 and parti != events['participants'].values[i] %}#}
+{#                            class="container_box_one_event_super"#}
+{#                        {% else %}#}
+{#                            class="container_box_one_event" {% endif %}>#}
+
+
+                            class="container_box_one_event" >
                 {% if events['status_id'].values[i] == 2 %}
                     <p3 style="color:#c8385a;">
                         Внимание! Мероприятие было перенесено на {{ events['beginning_date'].values[i] }}!
@@ -312,5 +320,7 @@
             {% endfor %}
             </div>
 
+            </div>
+        </div>
     </form>
 {% endmacro %}

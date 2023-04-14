@@ -16,6 +16,7 @@ def get_user_events(conn,id):
     ORDER BY status_id,strftime('%Y-%m-%d',beginning_date) DESC, event_name 
     ''', conn,params={"id":id})
 
+
 def get_user_events_sort(conn,id, sort):
     return pd.read_sql(f'''SELECT event_name,theme_name,type_name,participants, 
     strftime('%d.%m.%Y',beginning_date) as beginning_date,strftime('%d.%m.%Y',expiration_date) as expiration_date,
@@ -31,6 +32,7 @@ def get_user_events_sort(conn,id, sort):
     WHERE user_id = :id
     ORDER BY {sort} 
     ''', conn,params={"id":id})
+
 
 def get_status(conn,id):
     return pd.read_sql(f'''
