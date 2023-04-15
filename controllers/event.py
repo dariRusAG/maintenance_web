@@ -96,6 +96,7 @@ def event():
         if get_user_id(conn, login) == "error":
             add_user(conn, login, password)
             text = "Регистрация прошла успешно"
+            session['type_auth'] = ''
         else:
             text = "Пользователь с таким логином уже существует"
 
