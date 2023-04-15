@@ -2,7 +2,7 @@ from app import app
 from flask import render_template, request, session
 from utils import get_db_connection
 from models.event_model import *
-from models.admin_profile_model import *
+from controllers.functions import *
 
 
 @app.route('/admin_profile', methods=['GET', 'POST'])
@@ -30,25 +30,26 @@ def admin_profile():
 
     # Добавление нового мероприятия
     if request.values.get('add_new_event'):
-        location_name = df_location.loc[int(request.values.get('location')) - 1][0]
-        venue_name = str(request.values.get('new_event_venue'))
-        add_new_venue(conn, venue_name)
-        venue_id = int(get_venue_id(conn, venue_name))
-        add_new_location(conn, venue_id, location_name)
-        get_location_id(conn, venue_id, location_name)
-        print(get_location_id(conn, venue_id, location_name))
-        add_new_event(conn, request.values.get('new_event_name'), request.values.get('theme'),
-                      request.values.get('type'), request.values.get('new_event_part'),
-                      request.values.get('new_event_beginning_date')[6:11] + "-" + request.values.get(
-                          'new_event_beginning_date')[3:5] + "-" + request.values.get('new_event_beginning_date')[0:2],
-                      request.values.get('new_event_expiration_date')[6:11] + "-" + request.values.get(
-                          'new_event_expiration_date')[3:5] + "-" + request.values.get('new_event_expiration_date')[
-                                                                    0:2],
-                      request.values.get('start_time'), request.values.get('end_time'), request.values.get('organizer'),
-                      int(get_location_id(conn, venue_id, location_name)), request.values.get('new_event_description'),
-                      request.values.get('status'), request.values.get('picture'))
-
+        venue_id, location_name = event(conn, df_location, 'location', 'new_event_venue')
         admin_panel_button = "Добавление"
+        add_new_event(conn,
+                      request.values.get('new_event_name'),
+                      request.values.get('theme'),
+                      request.values.get('type'),
+                      request.values.get('new_event_part'),
+                      request.values.get('new_event_beginning_date')[6:11] + "-" +
+                      request.values.get('new_event_beginning_date')[3:5] + "-" +
+                      request.values.get('new_event_beginning_date')[0:2],
+                      request.values.get('new_event_expiration_date')[6:11] + "-" +
+                      request.values.get('new_event_expiration_date')[3:5] + "-" +
+                      request.values.get('new_event_expiration_date')[0:2],
+                      request.values.get('start_time'),
+                      request.values.get('end_time'),
+                      request.values.get('organizer'),
+                      int(get_location_id(conn, venue_id, location_name)),
+                      request.values.get('new_event_description'),
+                      request.values.get('status'),
+                      request.values.get('picture'))
 
     # Удаление мероприятия
     elif request.values.get('delete_event'):
@@ -87,24 +88,26 @@ def admin_profile():
     # Редактирование полей мероприятия
     elif request.values.get('edit_event'):
         admin_panel_button = "Редактирование"
-        location_name = df_location.loc[int(request.values.get('edit_location')) - 1][0]
-        venue_name = str(request.values.get('edit_event_venue'))
-        add_new_venue(conn, venue_name)
-        venue_id = int(get_venue_id(conn, venue_name))
-        add_new_location(conn, venue_id, location_name)
-        get_location_id(conn, venue_id, location_name)
-        print(request.values.get('edit_type'))
-        print(request.values.get('edit_theme'))
-        update_event(conn, session['event_id'], request.values.get('edit_event_name'), request.values.get('edit_theme'),
-                     request.values.get('edit_type'), request.values.get('edit_event_participants'),
-                     request.values.get('edit_event_beginning_dat')[6:11] + "-" + request.values.get(
-                         'edit_event_beginning_dat')[3:5] + "-" + request.values.get('edit_event_beginning_dat')[0:2],
-                     request.values.get('edit_event_expiration_dat')[6:11] + "-" + request.values.get(
-                         'edit_event_expiration_dat')[3:5] + "-" + request.values.get('edit_event_expiration_dat')[0:2],
-                     request.values.get('edit_event_start_time'), request.values.get('edit_event_end_time'),
+        venue_id, location_name = event(conn, df_location, 'edit_location', 'edit_event_venue')
+        update_event(conn,
+                     session['event_id'],
+                     request.values.get('edit_event_name'),
+                     request.values.get('edit_theme'),
+                     request.values.get('edit_type'),
+                     request.values.get('edit_event_participants'),
+                     request.values.get('edit_event_beginning_dat')[6:11] + "-" +
+                     request.values.get('edit_event_beginning_dat')[3:5] + "-" +
+                     request.values.get('edit_event_beginning_dat')[0:2],
+                     request.values.get('edit_event_expiration_dat')[6:11] + "-" +
+                     request.values.get('edit_event_expiration_dat')[3:5] + "-" +
+                     request.values.get('edit_event_expiration_dat')[0:2],
+                     request.values.get('edit_event_start_time'),
+                     request.values.get('edit_event_end_time'),
                      request.values.get('edit_organizer'),
-                     int(get_location_id(conn, venue_id, location_name)), request.values.get('edit_event_description'),
-                     request.values.get('edit_status'), request.values.get('edit_event_picture'))
+                     int(get_location_id(conn, venue_id, location_name)),
+                     request.values.get('edit_event_description'),
+                     request.values.get('edit_status'),
+                     request.values.get('edit_event_picture'))
 
     event_info = get_event_info(conn, session['event_id'])
     df_event = get_event(conn)

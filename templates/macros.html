@@ -2,7 +2,7 @@
 
 {% macro render_option(name, list, len) %}
     <label>
-        <select name= {{ name }}>
+        <select name="{{ name }}" class="select_suggest">
             {% set n = len(list) %}
             {% for i in range(n) %}
                 {% set id = i %}
@@ -15,7 +15,7 @@
 {% endmacro %}
 
 {% macro render_option_edit(name, choice, list, len) %}
-    <select name="{{ name }}">
+    <select name="{{ name }}" class="select-list">
         {% set n = len(list) %}
         {% for i in range(n) %}
             {% set id = i %}
@@ -43,13 +43,12 @@
 <p class="left_filter">
     Название
     <label>
-        <input type="text" name="new_event_name" placeholder="">
+        <input type="text" name="new_event_name" placeholder="" class="input_auth input_suggest">
     </label>
 </p>
 
 <p class="left_filter">
-    Тема
-    {{ render_option("theme", theme_list, len) }}
+    Тема {{ render_option("theme", theme_list, len) }}
 </p>
 
 <p class="left_filter">
@@ -70,7 +69,7 @@
 <p class="left_filter">
     Место проведения
     <label>
-        <input type="text" name="new_event_venue" placeholder="">
+        <input type="text" name="new_event_venue" placeholder="" class="input_auth input_suggest">
     </label>
 </p>
 
@@ -84,65 +83,65 @@
 <p class="left_filter">
     Введите количество участников
     <label>
-        <input type="text" name="new_event_part" placeholder="">
+        <input type="text" name="new_event_part" placeholder="" class="input_auth input_suggest">
     </label>
 </p>
 
 <p class="left_filter">
     Дата начала
     <label>
-        <input type="text" name="new_event_beginning_date" placeholder="">
+        <input type="text" name="new_event_beginning_date" placeholder="" class="input_auth input_suggest">
     </label>
 </p>
 
 <p class="left_filter">
     Дата окончания
     <label>
-        <input type="text" name="new_event_expiration_date" placeholder="">
+        <input type="text" name="new_event_expiration_date" placeholder="" class="input_auth input_suggest">
     </label>
 </p>
 
 <p class="left_filter">
     Время начала
     <label>
-        <input type="text" name="start_time" placeholder="">
+        <input type="text" name="start_time" placeholder="" class="input_auth input_suggest">
     </label>
 </p>
 
 <p class="left_filter">
     Время окончания
     <label>
-        <input type="text" name="end_time" placeholder="">
+        <input type="text" name="end_time" placeholder="" class="input_auth input_suggest">
     </label>
 </p>
 
 <p class="left_filter">
     Афиша или фотография
     <label>
-        <input type="text" name="picture" placeholder="">
+        <input type="text" name="picture" placeholder="" class="input_auth input_suggest">
     </label>
 </p>
 
 <p class="left_filter">
     Введите описание мероприятия
     <label>
-        <textarea name="new_event_description"></textarea>
+        <textarea name="new_event_description" class="input_auth input_suggest"></textarea>
     </label>
 </p>
 
-{% if panel == "suggest" %}
-    <div class="admin_panel_right_data_text">
-        Контактная почта для связи:
-        <label>
-            <input type="text" name="suggest_event_mail" placeholder="">
-        </label>
-    </div>
-{% endif %}
+<p class="left_filter">
+    {% if panel == "suggest" %}
+            Контактная почта для связи:
+            <label>
+                <input type="text" name="suggest_event_mail" placeholder="" class="input_auth input_suggest">
+            </label>
+    {% endif %}
+</p>
 
 {% if panel == "admin" %}
-    <input type="submit" name="add_new_event" value="Добавить новое мероприятие" class="btn filter">
+    <input type="submit" name="add_new_event" value="Добавить новое мероприятие" class="btn send">
 {% else %}
-    <input type="submit" name="add_suggest_event" value="Добавить новое мероприятие" class="btn filter">
+    <input type="submit" name="add_suggest_event" value="Добавить новое мероприятие" class="btn send">
 {% endif %}
 </form>
 {% endmacro %}
@@ -343,12 +342,12 @@
     <div class="all_events_box">
     {% for i in range(len(events)) %}
         <div
-        {% if participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] == null %}
-            {% set parti = 1 %}
-        {% else %}
-            {% set parti = participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] %}
-        {% endif %}
-        <div
+                {% if participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] == null %}
+                    {% set parti = 1 %}
+                {% else %}
+                    {% set parti = participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] %}
+                {% endif %}
+
                 {% if parti / events['participants'].values[i] * 100 > 30 and parti != events['participants'].values[i] %}
                     class="container_box_one_event_super"
                 {% else %}

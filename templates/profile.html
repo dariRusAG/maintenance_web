@@ -34,28 +34,26 @@
         </form>
     </div>
 
-    <div class=box_for_all_profile>
-        <div class="box_for_all_profile_wt_text">
-            {% if len(status_list) != 0 %}
-                <div class="add_menu">
-                    <form action="" method="post">
-                        {{ macros.render_table("Статус мероприятия", status_list, session['status_user'], len) }}
-                        <input type="submit" value="Найти" name="search" class="btn filter">
-                        <input type="submit" value="Очистить" name="clear" class="btn filter">
-                    </form>
-                </div>
-                <form action="" method="get">
-                    <div class="title">
-                        {% if len(status_list) != 0 %}
-                            Мероприятия на которые вы зарегистрировались
-                        {% else %}
-                            Вы еще не зарегистрировались ни на одно мероприятие
-                        {% endif %}
-                    </div>
-                    {{ macros.render_event_list(events, "profile", participants_list, len) }}
+    <div class=box_for_all>
+        {% if len(status_list) != 0 %}
+            <div class="add_menu">
+                <form action="" method="post">
+                    {{ macros.render_table("Статус мероприятия", status_list, session['status_user'], len) }}
+                    <input type="submit" value="Найти" name="search" class="btn filter">
+                    <input type="submit" value="Очистить" name="clear" class="btn filter">
                 </form>
-            {% endif %}
-        </div>
+            </div>
+            <form action="" method="get">
+                <div class="title">
+                    {% if len(status_list) != 0 %}
+                        Мероприятия на которые вы зарегистрировались
+                    {% else %}
+                        Вы еще не зарегистрировались ни на одно мероприятие
+                    {% endif %}
+                </div>
+                {{ macros.render_event_list(events, "profile", participants_list, len) }}
+            </form>
+        {% endif %}
     </div>
 
     {{ macros.event_info(event_info, participants_list, "profile", len) }}

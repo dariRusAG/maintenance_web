@@ -1,8 +1,8 @@
 from app import app
-from flask import render_template, request
-from models.admin_profile_model import *
+from flask import render_template
 from models.suggest_event_model import *
 from utils import get_db_connection
+from controllers.functions import *
 
 
 @app.route('/suggest_event', methods=['GET', 'POST'])
@@ -17,13 +17,7 @@ def suggest_event():
 
     # Отправка предложенного мероприятия на рассмотрение администратору
     if request.values.get('add_suggest_event'):
-        location_name = df_location.loc[int(request.values.get('location')) - 1][0]
-        venue_name = str(request.values.get('new_event_venue'))
-        add_new_venue(conn, venue_name)
-        venue_id = int(get_venue_id(conn, venue_name))
-        add_new_location(conn, venue_id, location_name)
-        get_location_id(conn, venue_id, location_name)
-        print(get_location_id(conn, venue_id, location_name))
+        venue_id, location_name = event(conn, df_location, 'location', 'new_event_venue')
         add_suggest_event(conn,
                           request.values.get('new_event_name'),
                           request.values.get('theme'),

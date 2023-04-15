@@ -1,7 +1,8 @@
 from app import app
-from flask import render_template, request, session, make_response
+from flask import render_template, request, session
 from utils import get_db_connection
 from models.event_model import *
+from controllers.functions import *
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -10,19 +11,16 @@ def event():
 
     # Начальная инициализация параметров
     error_info = False
-
     event_id = 1
     text = ''
+    start_date = ''
+    end_date = ''
+    start_time = ''
+    end_time = ''
 
     # Просмотр подробной информации о мероприятии
     if request.values.get('choice_event'):
         event_id = int(request.values.get('choice_event'))
-
-    # Начальная инициализация session
-    if 'type_auth' not in session:
-        session['type_auth'] = []
-    if 'reg' not in session:
-        session['reg'] = []
 
     # Регистрация пользователя на мероприятие
     elif request.values.get('registration'):
@@ -36,15 +34,7 @@ def event():
     # Выход из учетной записи
     elif request.values.get('user_logout'):
         session.pop('user_id', None)
-        session['types'] = []
-        session['themes'] = []
-        session['organizers'] = []
-        session['locations'] = []
-        session['status'] = []
-        session['start_date'] = "0000-00-00"
-        session['end_date'] = "9999-99-99"
-        session['start_time'] = "00:00"
-        session['end_time'] = "23:59"
+        init_session()
 
     # Отмена регистрации пользователя на мероприятии
     elif request.values.get('cancel'):
@@ -109,15 +99,7 @@ def event():
         organizers = []
         locations = []
         status = []
-        session['types'] = []
-        session['themes'] = []
-        session['organizers'] = []
-        session['locations'] = []
-        session['status'] = []
-        session['start_date'] = "0000-00-00"
-        session['end_date'] = "9999-99-99"
-        session['start_time'] = "00:00"
-        session['end_time'] = "23:59"
+        init_session()
     else:
         types = request.form.getlist("Тип")
         themes = request.form.getlist("Тема")
@@ -175,6 +157,10 @@ def event():
         session['start_time'] = "00:00"
     if 'end_time' not in session:
         session['end_time'] = "23:59"
+    if 'type_auth' not in session:
+        session['type_auth'] = []
+    if 'reg' not in session:
+        session['reg'] = []
 
     df_theme = get_theme(conn)
     df_type = get_type(conn)
