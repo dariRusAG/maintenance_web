@@ -75,6 +75,7 @@ def event():
             case "user":
                 session['user_id'] = f'{get_user_id(conn, login)}'
                 session['user_role'] = "user"
+                session['type_auth'] = ''
                 if 'remember_id' in session:
                     if len(is_was_registarte_to_event(conn, session['user_id'], session['remember_id'])) == 0:
                         to_registrate(conn, session['user_id'], session['remember_id'])
@@ -82,6 +83,7 @@ def event():
             case "admin":
                 session['user_id'] = f'{get_user_id(conn, login)}'
                 session['user_role'] = "admin"
+                session['type_auth'] = ''
             case "error":
                 error_info = True
                 user_login = True
@@ -186,7 +188,7 @@ def event():
     df_event = get_event(conn)
 
     # Способы сортировки
-    title = request.values.get('list')
+    title = request.values.get('select-list')
     if title == 'Отсортировать по алфавиту ↓':
         sort = 'event_name DESC'
         df_event = get_event_sort(conn, sort)

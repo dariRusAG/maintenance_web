@@ -21,7 +21,6 @@ html {
     width: 100%;
 }
 
-/*Теперь уберем маркеры со списка и произведем выравнивание его элементов в одну линию*/
 .menu li {
     display: inline-block;
     vertical-align: top;
