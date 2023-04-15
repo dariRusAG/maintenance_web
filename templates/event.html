@@ -220,7 +220,7 @@
                                 {% else %}
                                     {% set parti = participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] %}
                                     {% if (parti == null or events['participants'].values[i] != parti) and (user_role != "admin") %}
-                                        <form action="" method="get">
+                                        <form action="#open_user" method="get">
                                             <input type="hidden" name="registration" value={{ events['event_id'].values[i] }}>
                                             <input type="submit" value="Участвовать" class="btn sort">
                                         </form>
@@ -232,7 +232,7 @@
                                 {% endif %}
                             {% endif %}
 
-                            <form action="{{ url_for('event') }}#open_info_event" method="get">
+                            <form action="#open_info_event" method="get">
                                 <input type="hidden" name="choice_event" value={{ events['event_id'].values[i] }}>
                                 <input type="submit" value="Подробнее" class="btn sort">
                             </form>

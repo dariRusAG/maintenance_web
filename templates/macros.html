@@ -339,122 +339,125 @@
     </fieldset>
 {% endmacro %}
 
-{% macro render_event_list(events, name, len) %}
+{% macro render_event_list(events, name, participants_list, len) %}
     <div class="all_events_box">
-        {% for i in range(len(events)) %}
-            <div class="container_box_one_event">
-
-            {#                 <div#}
-            {#                            {% if parti / events['participants'].values[i] * 100 > 30 and parti != events['participants'].values[i] %}#}
-            {#                                class="container_box_one_event_super"#}
-            {#                            {% else %}#}
-            {#                                class="container_box_one_event"#}
-            {#                            {% endif %}#}
-            {#                    >#}
-
-            {% if events['status_id'].values[i] == 2 %}
-                <div class="warning">
-                    Внимание! Мероприятие было перенесено на {{ events['beginning_date'].values[i] }}!
-                </div>
-            {% endif %}
-
-            {% if events['status_id'].values[i] == 3 %}
-                <div class="warning">
-                    Внимание! Мероприятие было отменено!
-                </div>
-            {% endif %}
-
-            {% if events['status_id'].values[i] == 4 %}
-                <div class="warning">
-                    Мероприятие завершено.
-                </div>
-            {% endif %}
-
-            <p class="event-title">
-                {{ events['event_name'].values[i] }}
-            </p>
-
-            <p>
-                <img src="{{ events['picture'].values[i] }}" alt="" width="280px" height="auto">
-            </p>
-
-            <p class="event-caption">
-                {{ events['type_name'].values[i] }}
-            </p>
-
-            <p>
-                Тема:
-                {{ events['theme_name'].values[i] }}
-            </p>
-
-            <p>
-                Количество участников:
-                {{ events['participants'].values[i] }}
-            </p>
-
-            <p>
-                Дата:
-                {{ events['beginning_date'].values[i] }}
-            </p>
-
-            <p>
-                Время:
-                {{ events['start_time'].values[i] }}
-            </p>
-
-            <p>
-                Место проведения:
-                {{ events['location_name'].values[i] }}
-            </p>
-
-            <div class="relevance">
-                {% if (events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4) %}
-                    {{ events['status_name'].values[i] }}
+    {% for i in range(len(events)) %}
+        <div
+        {% if participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] == null %}
+            {% set parti = 1 %}
+        {% else %}
+            {% set parti = participants_list[participants_list['event_id'] == events['event_id'].values[i]]['coun'].values[0] %}
+        {% endif %}
+        <div
+                {% if parti / events['participants'].values[i] * 100 > 30 and parti != events['participants'].values[i] %}
+                    class="container_box_one_event_super"
                 {% else %}
-                    {% if events['status_id'].values[i] == 1 %}
-                        <div class="relevance_green">
-                            {{ events['status_name'].values[i] }}
-                        </div>
-                    {% else %}
-                        <div class="relevance_yellow">
-                            {{ events['status_name'].values[i] }}
-                        </div>
-                    {% endif %}
+                    class="container_box_one_event"
                 {% endif %}
+        >
+        {% if events['status_id'].values[i] == 2 %}
+            <div class="warning">
+                Внимание! Мероприятие было перенесено на {{ events['beginning_date'].values[i] }}!
             </div>
+        {% endif %}
 
-            {% if (events['status_id'].values[i] == 1) or (events['status_id'].values[i] == 2) %}
+        {% if events['status_id'].values[i] == 3 %}
+            <div class="warning">
+                Внимание! Мероприятие было отменено!
+            </div>
+        {% endif %}
+
+        {% if events['status_id'].values[i] == 4 %}
+            <div class="warning">
+                Мероприятие завершено.
+            </div>
+        {% endif %}
+
+        <p class="event-title">
+            {{ events['event_name'].values[i] }}
+        </p>
+
+        <p>
+            <img src="{{ events['picture'].values[i] }}" alt="" width="280px" height="auto">
+        </p>
+
+        <p class="event-caption">
+            {{ events['type_name'].values[i] }}
+        </p>
+
+        <p>
+            Тема:
+            {{ events['theme_name'].values[i] }}
+        </p>
+
+        <p>
+            Количество участников:
+            {{ events['participants'].values[i] }}
+        </p>
+
+        <p>
+            Дата:
+            {{ events['beginning_date'].values[i] }}
+        </p>
+
+        <p>
+            Время:
+            {{ events['start_time'].values[i] }}
+        </p>
+
+        <p>
+            Место проведения:
+            {{ events['location_name'].values[i] }}
+        </p>
+
+        <div class="relevance">
+            {% if (events['status_id'].values[i] == 3) or (events['status_id'].values[i] == 4) %}
+                {{ events['status_name'].values[i] }}
+            {% else %}
+                {% if events['status_id'].values[i] == 1 %}
+                    <div class="relevance_green">
+                        {{ events['status_name'].values[i] }}
+                    </div>
+                {% else %}
+                    <div class="relevance_yellow">
+                        {{ events['status_name'].values[i] }}
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+
+        {% if (events['status_id'].values[i] == 1) or (events['status_id'].values[i] == 2) %}
+            <div class="buttons">
+            <form action="" method="get">
+                <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
+                <input type="submit" value="Отменить участие" class="btn sort">
+            </form>
+        {% else %}
+            {% if (events['status_id'].values[i] == 3) %}
                 <div class="buttons">
                 <form action="" method="get">
                     <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
-                    <input type="submit" value="Отменить участие" class="btn sort">
+                    <input type="submit" value="Удалить из списка" class="btn sort">
                 </form>
             {% else %}
-                {% if (events['status_id'].values[i] == 3) %}
-                    <div class="buttons">
-                    <form action="" method="get">
-                        <input type="hidden" name="cancel" value={{ events['event_id'].values[i] }}>
-                        <input type="submit" value="Удалить из списка" class="btn sort">
-                    </form>
-                {% else %}
-                    <div class="buttons">
-                    <form action="" method="get">
-                        <input type="hidden" name="to_rate" value={{ events['event_id'].values[i] }}>
-                        <input type="submit" value="Оценить" class="btn sort">
-                    </form>
-                {% endif %}
+                <div class="buttons">
+                <form action="" method="get">
+                    <input type="hidden" name="to_rate" value={{ events['event_id'].values[i] }}>
+                    <input type="submit" value="Оценить" class="btn sort">
+                </form>
             {% endif %}
+        {% endif %}
 
-        <form action="{{ url_for(name) }}#open_info_event" method="get">
-            <input type="hidden" name="choice_event" value={{ events['event_id'].values[i] }}>
-            <input type="submit" value="Подробнее" class="btn sort">
-        </form>
-        </div>
-        </div>
-        {% endfor %}
-        </div>
-        </div>
+    <form action="{{ url_for(name) }}#open_info_event" method="get">
+        <input type="hidden" name="choice_event" value={{ events['event_id'].values[i] }}>
+        <input type="submit" value="Подробнее" class="btn sort">
+    </form>
     </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+</div>
 {% endmacro %}
 
 
@@ -494,9 +497,9 @@
 
                         <p>
                             Количество зарегистрировавшихся на мероприятие:
-                           {% if  event_info['event_id'].values[0] in participants_list['event_id'].values %}
-                                    {{ participants_list[participants_list['event_id'] == event_info['event_id'].values[0]]['coun'].values[0] }}
-                                    </p>
+                            {% if  event_info['event_id'].values[0] in participants_list['event_id'].values %}
+                                {{ participants_list[participants_list['event_id'] == event_info['event_id'].values[0]]['coun'].values[0] }}
+                                </p>
                             {% else %}
                                 0
                             {% endif %}

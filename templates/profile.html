@@ -52,7 +52,7 @@
                             Вы еще не зарегистрировались ни на одно мероприятие
                         {% endif %}
                     </div>
-                    {{ macros.render_event_list(events, "profile", len) }}
+                    {{ macros.render_event_list(events, "profile", participants_list, len) }}
                 </form>
             {% endif %}
         </div>

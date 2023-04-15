@@ -9,7 +9,6 @@ def event():
     conn = get_db_connection()
 
     # Начальная инициализация параметров
-    user_login = False
     error_info = False
 
     event_id = 1
@@ -31,7 +30,7 @@ def event():
         if 'user_id' in session:
             to_registrate(conn, session['user_id'], event_id)
         else:
-            user_login = True
+            session['type_auth'] = 'Войти'
             session['remember_id'] = event_id
 
     # Выход из учетной записи
@@ -54,7 +53,6 @@ def event():
 
     # Открытие окна авторизации/регистрации
     elif request.values.get('user_login'):
-        user_login = True
         session['type_auth'] = 'Войти'
         session['reg'] = 'Еще нет аккаунта?'
 
@@ -86,7 +84,6 @@ def event():
                 session['type_auth'] = ''
             case "error":
                 error_info = True
-                user_login = True
                 text = "Неверно введен логин или пароль"
 
     # Регистрация нового пользователя
@@ -228,7 +225,6 @@ def event():
         status_list=df_status,
         events=df_event,
         event_info=event_info,
-        user_login=user_login,
         error_info=error_info,
         user_event_list=df_user_event,
         participants_list=df_participants,
