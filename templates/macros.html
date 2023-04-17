@@ -188,7 +188,7 @@
 {% endmacro %}
 
 {% macro render_option_edit(name, choice, list, len) %}
-    <select name="{{ name }}" class="select-list">
+    <select name="{{ name }}" class="select_suggest">
         {% set n = len(list) %}
         {% for i in range(n) %}
             {% set id = i %}
@@ -321,7 +321,6 @@
 
 <!--Макрос для вывода редактирования на панели администратора-->
 {% macro admin_panel_edit(all_events, checked_value, one_event_info, theme_list, type_list, organizer_list, location_list, status_list, len) %}
-{#    <div class="edit_big_box">#}
         {% if checked_value == False %}
             {% for i in range(len(all_events)) %}
                 <div class="edit_small_box">
@@ -344,98 +343,97 @@
             {% endfor %}
         {% else %}
             <form action="" method="get">
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Название:
                     <label>
-                        <input type="text" name="edit_event_name" value="{{ one_event_info['event_name'].values[0] }}">
+                        <input type="text" name="edit_event_name" value="{{ one_event_info['event_name'].values[0] }}" class="input_auth input_suggest">
                     </label>
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Тема:
                     {{ render_option_edit("edit_theme", one_event_info['theme_name'].values[0], theme_list, len) }}
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Тип:
                     {{ render_option_edit("edit_type", one_event_info['type_name'].values[0], type_list, len) }}
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Количество участников:
                     <label>
                         <input type="text" name="edit_event_participants"
-                               value="{{ one_event_info['participants'].values[0] }}">
+                               value="{{ one_event_info['participants'].values[0] }}" class="input_auth input_suggest">
                     </label>
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Дата начала:
                     <label>
                         <input type="text" name="edit_event_beginning_dat"
-                               value="{{ one_event_info['beginning_dat'].values[0] }}">
+                               value="{{ one_event_info['beginning_dat'].values[0] }}" class="input_auth input_suggest">
                     </label>
                     Дата окончания:
                     <label>
                         <input type="text" name="edit_event_expiration_dat"
-                               value="{{ one_event_info['expiration_dat'].values[0] }}">
+                               value="{{ one_event_info['expiration_dat'].values[0] }}" class="input_auth input_suggest">
                     </label>
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Время начала:
                     <label>
                         <input type="text" name="edit_event_start_time"
-                               value="{{ one_event_info['start_time'].values[0] }}">
+                               value="{{ one_event_info['start_time'].values[0] }}" class="input_auth input_suggest">
                     </label>
                     Время окончания:
                     <label>
                         <input type="text" name="edit_event_end_time"
-                               value="{{ one_event_info['end_time'].values[0] }}">
+                               value="{{ one_event_info['end_time'].values[0] }}" class="input_auth input_suggest">
                     </label>
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Организатор:
                     {{ render_option_edit("edit_organizer", one_event_info['organizer_name'].values[0], organizer_list, len) }}
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Площадка проведения:
                     {{ render_option_edit("edit_location", one_event_info['location_name'].values[0], location_list, len) }}
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Место проведения:
                     <label>
-                        <input type="text" name="edit_event_venue" value="{{ one_event_info['venue_name'].values[0] }}">
+                        <input type="text" name="edit_event_venue" value="{{ one_event_info['venue_name'].values[0] }}" class="input_auth input_suggest">
                     </label>
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Статус:
                     {{ render_option_edit("edit_status", one_event_info['status_name'].values[0], status_list, len) }}
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Афиша или фотография:
                     <label>
-                        <input type="text" name="edit_event_picture" value="{{ one_event_info['picture'].values[0] }}">
+                        <input type="text" name="edit_event_picture" value="{{ one_event_info['picture'].values[0] }}" class="input_auth input_suggest">
                     </label>
-                </div>
+                </p>
 
-                <div class="admin_panel_right_data_text">
+                <p class="left_filter">
                     Описание:
                     <label>
-                        <textarea name="edit_event_description"
+                        <textarea name="edit_event_description" class="input_auth input_suggest"
                                   value="{{ one_event_info['description'].values[0] }}">{{ one_event_info['description'].values[0] }}</textarea>
                     </label>
-                </div>
+                </p>
 
-                <input type="submit" name="edit_event" value="Отредактировать мероприятие" class="btn sort">
+                <input type="submit" name="edit_event" value="Отредактировать" class="btn sort">
             </form>
         {% endif %}
-{#    </div>#}
 {% endmacro %}
 
 <!--Макрос для вывода оценок на панели администратора-->
