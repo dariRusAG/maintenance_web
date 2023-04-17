@@ -94,6 +94,8 @@
                 {% if user_role == "guest" or user_role == "admin" %}
                     {% if events['status_id'].values[i] == 1 or events['status_id'].values[i] == 2 %}
                         <input type="submit" disabled value="Участвовать" class="btn sort">
+                    {% else %}
+                        <input type="submit" value="Участвовать" class="btn sort opacity">
                     {% endif %}
                 {% else %}
                     {% if events['event_id'].values[i] in user_event_list %}
@@ -121,6 +123,8 @@
                                     <input type="hidden" name="registration" value={{ events['event_id'].values[i] }}>
                                     <input type="submit" value="Участвовать" class="btn sort">
                                 </form>
+                            {% else %}
+                                <input type="submit" value="Участвовать" class="btn sort opacity">
                             {% endif %}
                         {% else %}
                             <input type="submit" disabled value="Участвовать" class="btn sort">
@@ -317,7 +321,7 @@
 
 <!--Макрос для вывода редактирования на панели администратора-->
 {% macro admin_panel_edit(all_events, checked_value, one_event_info, theme_list, type_list, organizer_list, location_list, status_list, len) %}
-    <div class="edit_big_box">
+{#    <div class="edit_big_box">#}
         {% if checked_value == False %}
             {% for i in range(len(all_events)) %}
                 <div class="edit_small_box">
@@ -431,7 +435,7 @@
                 <input type="submit" name="edit_event" value="Отредактировать мероприятие" class="btn sort">
             </form>
         {% endif %}
-    </div>
+{#    </div>#}
 {% endmacro %}
 
 <!--Макрос для вывода оценок на панели администратора-->
@@ -459,18 +463,21 @@
         <div class="all_events_box_suggest">
             {% for i in range(len(events)) %}
                 <div class="container_box_one_event">
-                    <p>
+                    <p class="left_filter">
                         Название:
                         {{ events['event_name'].values[i] }}
                     </p>
 
-                    <p>
+                    <p class="left_filter">
                         Контактная почта:
                         {{ events['mail'].values[i] }}
                     </p>
 
-                    <img src="{{ events['picture'].values[i] }}" alt="" width="280px" height="auto">
+                    <p class="left_filter">
+                        <img src="{{ events['picture'].values[i] }}" alt="" width="280px" height="auto">
+                    </p>
 
+                    <p class="left_filter">
                     <form action="" method="get">
                         <input type="submit" value="Принять" class="btn sort">
                         <input type="hidden" name="add_suggest_event" value={{ events['event_id'].values[i] }}>
@@ -507,7 +514,6 @@
     </fieldset>
 {% endmacro %}
 
-
 {% macro event_info(event_info, participants_list, name, list_title, len) %}
     <div id="open_info_event" class="info_about_event">
         <div class="modal-dialog">
@@ -515,7 +521,9 @@
                 <a href="#close_info" title="Close" class="close">×</a>
                 <form action="{{ url_for(name) }}#close_info" method="get">
                     <div class="modal-body">
-                        {{ render_elements_event(event_info.values[0], list_title, len, 1) }}
+                    {% for i in range(len(event_info)) %}
+                        {{ render_elements_event(event_info.values[i], list_title, len, 1) }}
+                    {% endfor %}
                         <p>
                             Количество зарегистрировавшихся на мероприятие:
                             {% if  event_info['event_id'].values[0] in participants_list['event_id'].values %}

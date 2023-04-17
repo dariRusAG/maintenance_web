@@ -69,6 +69,10 @@ html {
     text-transform: uppercase;
 }
 
+.opacity {
+    opacity: 0;
+}
+
 /*---------------*/
 /* ADMIN_PROFILE */
 /*---------------*/
@@ -121,16 +125,8 @@ html {
     display: flex;
     flex-direction: column;
     width: 90%;
-    margin-left: 2%;
-    margin-top: 2%;
     border-radius: 5px;
-}
-
-.admin_panel_right_data_text {
-    display: flex;
-    width: auto;
-    margin-top: 1%;
-    border-radius: 5px;
+    padding: 20px 25px;
 }
 
 .admin_panel_button {
@@ -163,8 +159,6 @@ html {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 105%;
-    height: 92%;
     overflow-y: auto;
     justify-content: space-around;
 }

@@ -114,6 +114,8 @@ def admin_profile():
     df_participants = get_participants(conn)
     df_suggest_event = get_suggest_event(conn)
 
+    list_title = init_list_title()
+
     html = render_template(
         'admin_profile.html',
         admin_panel_button=admin_panel_button,
@@ -130,7 +132,8 @@ def admin_profile():
         checked_value=checked_value,
         one_event_info=event_info,
         suggest_event=df_suggest_event,
-        len=len
+        len=len,
+        list_title=list_title
     )
 
     return html
