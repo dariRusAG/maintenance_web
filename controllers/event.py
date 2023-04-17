@@ -1,5 +1,5 @@
 from app import app
-from flask import render_template, request, session
+from flask import render_template
 from utils import get_db_connection
 from models.event_model import *
 from controllers.functions import *
@@ -202,6 +202,8 @@ def event():
             (df_event['start_time'] >= session['start_time'])) & (df_event['end_time'] <= session['end_time']) & (
             (df_event['beginning_date'] >= session['start_date'])) & (df_event['expiration_date'] <= session['end_date'])]
 
+    list_title = init_list_title()
+
     html = render_template(
         'event.html',
         theme_list=df_theme,
@@ -219,7 +221,8 @@ def event():
         title=title,
         type_auth=session['type_auth'],
         reg=session['reg'],
-        text=text
+        text=text,
+        list_title=list_title
     )
 
     return html

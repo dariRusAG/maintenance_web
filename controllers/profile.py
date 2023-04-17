@@ -1,9 +1,9 @@
 from app import app
-from flask import render_template, request, session
+from flask import render_template
 from utils import get_db_connection
 from models.profile_model import *
-from models.event_model import get_event_info, get_participants
-
+from models.event_model import get_event_info, get_participants, get_user_events_only_id
+from controllers.functions import *
 
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
@@ -59,7 +59,7 @@ def profile():
     df_event = df_event[((df_event['status_name'].isin(session['status_user'])) | (len(session['status_user']) == 0))]
 
     # Способы сортировки
-    title = request.values.get('list')
+    title = request.values.get('select-list')
     if title == 'Отсортировать по алфавиту ↓':
         sort = 'event_name DESC'
         df_event = get_user_events_sort(conn, session['user_id'], sort)
@@ -81,7 +81,9 @@ def profile():
     elif title == 'Рекомендуемая сортировка':
         df_event = get_user_events(conn, session['user_id'])
 
-    print(df_event)
+    df_user_event = get_user_events_only_id(conn, session['user_id']).values.tolist()
+
+    list_title = init_list_title()
 
     html = render_template(
         'profile.html',
@@ -92,7 +94,9 @@ def profile():
         info_=info_,
         participants_list=df_participants,
         len=len,
-        title=title
+        title=title,
+        user_event_list=df_user_event,
+        list_title=list_title
     )
 
     return html

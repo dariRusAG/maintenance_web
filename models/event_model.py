@@ -91,9 +91,9 @@ def get_status(conn):
 
 def get_event(conn):
     return pd.read_sql('''
-    SELECT event_name, theme_name, type_name, participants, strftime('%d.%m.%Y', beginning_date) as beginning_dat, 
+    SELECT event_name, picture, type_name, theme_name,  participants, strftime('%d.%m.%Y', beginning_date) as beginning_dat, 
     strftime('%d.%m.%Y', expiration_date) as expiration_dat, start_time, end_time, organizer_name, location_name,
-    venue_name, description, status_name, status_id, event_id, beginning_date, expiration_date, picture
+    venue_name, description, status_name, status_id, event_id, beginning_date, expiration_date
     FROM event 
     LEFT JOIN theme USING (theme_id) 
     LEFT JOIN type USING (type_id) 
@@ -108,9 +108,9 @@ def get_event(conn):
 
 def get_event_sort(conn, sort):
     return pd.read_sql(f'''
-    SELECT event_name, theme_name, type_name, participants, strftime('%d.%m.%Y',beginning_date) as beginning_dat,
+    SELECT event_name, picture, type_name, theme_name, participants, strftime('%d.%m.%Y',beginning_date) as beginning_dat,
     strftime('%d.%m.%Y',expiration_date) as expiration_dat, start_time, end_time, organizer_name, location_name, 
-    venue_name, description, status_name, status_id, event_id, beginning_date, expiration_date, picture
+    venue_name, status_name, description, status_id, event_id, beginning_date, expiration_date
     FROM event 
     LEFT JOIN theme USING (theme_id) 
     LEFT JOIN type USING (type_id) 
@@ -124,9 +124,9 @@ def get_event_sort(conn, sort):
 
 def get_event_info(conn, idd):
     return pd.read_sql(f'''
-    SELECT event_name, theme_name, type_name, participants, strftime('%d.%m.%Y', beginning_date) as beginning_dat,
+    SELECT event_name, picture, type_name, theme_name, participants, strftime('%d.%m.%Y', beginning_date) as beginning_dat,
     strftime('%d.%m.%Y',expiration_date) as expiration_dat, start_time, end_time, organizer_name, location_name, 
-    venue_name, description, status_name, status_id, picture, event_id
+    venue_name, status_name, description, status_id,  event_id
     FROM event  
     LEFT JOIN theme USING (theme_id) 
     LEFT JOIN type USING (type_id) 

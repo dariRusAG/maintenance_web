@@ -3,9 +3,9 @@ import pandas as pd
 
 def get_user_events(conn, idd):
     return pd.read_sql('''
-    SELECT event_name, theme_name, type_name, participants, strftime('%d.%m.%Y', beginning_date) as beginning_date,
+    SELECT event_name, picture, type_name, theme_name, participants, strftime('%d.%m.%Y', beginning_date) as beginning_date,
     strftime('%d.%m.%Y', expiration_date) as expiration_date, start_time, end_time, organizer_name, location_name, 
-    venue_name, description, status_name, status_id, event_id, picture
+    venue_name, description, status_name, status_id, event_id
     FROM user_event
     LEFT JOIN event USING (event_id) 
     LEFT JOIN theme USING (theme_id) 
@@ -21,9 +21,9 @@ def get_user_events(conn, idd):
 
 def get_user_events_sort(conn, idd, sort):
     return pd.read_sql(f'''
-    SELECT event_name, theme_name, type_name, participants, strftime('%d.%m.%Y', beginning_date) as beginning_date,
+    SELECT event_name, picture, type_name, theme_name, participants, strftime('%d.%m.%Y', beginning_date) as beginning_date,
     strftime('%d.%m.%Y', expiration_date) as expiration_date, start_time, end_time, organizer_name, location_name, 
-    venue_name, description, status_name, status_id, event_id, picture
+    venue_name, description, status_name, status_id, event_id
     FROM user_event
     LEFT JOIN event USING (event_id) 
     LEFT JOIN theme USING (theme_id) 

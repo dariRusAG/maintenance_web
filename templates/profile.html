@@ -17,22 +17,7 @@
         </ul>
     </div>
 
-    <div class="sort_event">
-        <form action="{{ url_for('profile') }}" method="post">
-            <label>
-                <select name="select-list" class="select-list">
-                    <option {% if title == 'None' or title == 'Рекомендуемая сортировка' %} selected {% endif %}>Рекомендуемая сортировка</option>
-                    <option {% if title == 'Отсортировать по алфавиту ↓' %} selected {% endif %}>Отсортировать по алфавиту ↓</option>
-                    <option {% if title == 'Отсортировать по алфавиту ↑' %} selected {% endif %}>Отсортировать по алфавиту ↑</option>
-                    <option {% if title == 'Отсортировать по дате ↓' %} selected {% endif %}>Отсортировать по дате ↓</option>
-                    <option {% if title == 'Отсортировать по дате ↑' %} selected {% endif %}>Отсортировать по дате ↑</option>
-                    <option {% if title == 'Отсортировать по статусу ↓' %} selected {% endif %}>Отсортировать по статусу ↓</option>
-                    <option {% if title == 'Отсортировать по статусу ↑' %} selected {% endif %}>Отсортировать по статусу ↑</option>
-                </select>
-            </label>
-            <input type="submit" value="Отсортировать" class="btn sort">
-        </form>
-    </div>
+    {{ macros.render_sort(title, 'profile') }}
 
     <div class=box_for_all>
         {% if len(status_list) != 0 %}
@@ -46,17 +31,20 @@
             <form action="" method="get">
                 <div class="title">
                     {% if len(status_list) != 0 %}
-                        Мероприятия на которые вы зарегистрировались
+                        Мероприятия, на которые вы зарегистрировались
                     {% else %}
                         Вы еще не зарегистрировались ни на одно мероприятие
                     {% endif %}
                 </div>
-                {{ macros.render_event_list(events, "profile", participants_list, len) }}
+
+                <div class="all_events_box">
+                    {{ macros.render_event_list(events, "profile", participants_list, user_role, user_event_list, len, list_title) }}
+                </div>
             </form>
         {% endif %}
     </div>
 
-    {{ macros.event_info(event_info, participants_list, "profile", len) }}
+    {{ macros.event_info(event_info, participants_list, "profile", list_title, len) }}
 
     {% if rate_window == True %}
     <form action="" method="get">
