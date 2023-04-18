@@ -12,7 +12,7 @@ def event():
     # Начальная инициализация параметров
     error_info = False
     event_id = 1
-    text = ''
+    message_error = ''
     start_date = ''
     end_date = ''
     start_time = ''
@@ -74,7 +74,7 @@ def event():
                 session['type_auth'] = ''
             case "error":
                 error_info = True
-                text = "Неверно введен логин или пароль"
+                message_error = "Неверно введен логин или пароль"
 
     # Регистрация нового пользователя
     elif request.values.get('type_auth') == 'Зарегистрироваться':
@@ -82,10 +82,10 @@ def event():
         password = request.values.get('password')
         if get_user_id(conn, login) == "error":
             add_user(conn, login, password)
-            text = "Регистрация прошла успешно"
+            message_error = "Регистрация прошла успешно"
             session['type_auth'] = ''
         else:
-            text = "Пользователь с таким логином уже существует"
+            message_error = "Пользователь с таким логином уже существует"
 
     # Удаление учетной записи
     if request.values.get('remove_profile_button'):
@@ -221,7 +221,7 @@ def event():
         title=title,
         type_auth=session['type_auth'],
         reg=session['reg'],
-        text=text,
+        message_error=message_error,
         list_title=list_title
     )
 

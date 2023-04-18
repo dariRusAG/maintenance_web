@@ -5,12 +5,12 @@ from models.profile_model import *
 from models.event_model import get_event_info, get_participants, get_user_events_only_id
 from controllers.functions import *
 
+
 @app.route('/profile', methods=['GET', 'POST'])
 def profile():
     conn = get_db_connection()
 
     # Начальная инициализация параметров
-    info_ = 0
     rate_window = False
     event_id = 0
 
@@ -91,7 +91,6 @@ def profile():
         status_list=df_status,
         rate_window=rate_window,
         event_info=event_info,
-        info_=info_,
         participants_list=df_participants,
         len=len,
         title=title,
